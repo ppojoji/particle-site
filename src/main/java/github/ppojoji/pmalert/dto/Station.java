@@ -1,5 +1,7 @@
 package github.ppojoji.pmalert.dto;
 
+import java.util.List;
+
 public class Station {
 	private Integer seq;
 	private String station_name;
@@ -7,6 +9,8 @@ public class Station {
 	private Double station_lat;
 	private Double station_lng;
 	private String sido;
+	
+	private List<PmData> pmData;
 	
 	public Station() {
 	}
@@ -56,7 +60,12 @@ public class Station {
 	public void setSido(String sido) {
 		this.sido = sido;
 	}
-	
+	public List<PmData> getPmData() {
+		return pmData;
+	}
+	public void setPmData(List<PmData> pmData) {
+		this.pmData = pmData;
+	}
 	@Override
 	public String toString() {
 		return "Station [seq=" + seq + ", station_name=" + station_name + ", station_addr=" + station_addr

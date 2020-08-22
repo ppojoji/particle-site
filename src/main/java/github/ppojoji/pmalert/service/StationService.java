@@ -69,4 +69,14 @@ public class StationService {
 	public List<Station> findStationsBySido(String sido) {
 		return stationDao.findStationsBySido(sido);
 	}
+	/**
+	 * 주어진 시도의 관측소 정보를 가져옴(현재 최신 미세먼지 데이터를 같이 받아옴)
+	 * @param sido
+	 * @return
+	 */
+	public Object findStationsWithRecentPm(String sido) {
+		return null;
+	}
+
+	
 }

@@ -61,4 +61,39 @@ $(document).ready(() => {
 	
 	loadSido()
 	
+	function sidoChange(){
+		$("#sido").on('change',function(e){
+			//console.log('일단 봅시다')
+			console.log(e.target.value);
+			$.ajax({
+				url: "/stations",
+				method : "GET" , 
+				data : {sido: e.target.value} ,
+				success(res){
+					console.log(res);
+					$("#station").empty()
+					
+					for(var i=0;i<res.length;i++){
+						$(`<option value="${res[i].seq}">${res[i].station_name}</option>`).appendTo('#station')
+					}
+					
+				}
+			})
+		})
+	}
+	$("#station").change(function(e){
+		//console.log(e.target.value)
+		readPmData(e.target.value);
+		/*
+		$.ajax({
+			url : `/pm/${e.target.value}`,
+			method : "GET" , 
+			success(res) {
+				console.log(res);
+			}
+		})
+		*/
+	});
+	sidoChange()
+	
 })
