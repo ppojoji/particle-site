@@ -1,5 +1,6 @@
 package github.ppojoji.pmalert.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,12 +29,24 @@ public class StationService {
 	 */
 	public void synchronizedStation() {
 		Scanner sc = new Scanner(System.in);
-//		String [] sido = "대구,인천,광주,대전,울산,경기,강원,충북,충남,전북,전남,경북,경남,제주,세종".split(",");
-		String [] sido = "경상북도".split(",");
+		String [] sido = "서울,대구,인천,광주,대전,울산,경기,강원,충북/충청북도,충남/충청남도,전북/전라북도,전남/전라남도,경북/경상북도,경남/경상남도,제주,세종".split(",");
+//		String [][] sidoNames = {
+//				{"서울"},
+//				{"부산"},
+//				{"전북,전라북도"}
+//		};
+//		String [] sido = "충청북도/충북".split(",");
 		for (String sidoName : sido) {
-			System.out.println(sidoName);
-			sc.hasNextLine(); // 엔터를 쳐야 api 호출되게...
-			List<Station> stations = pm.listStationsBySido(sidoName);
+			String [] names = sidoName.split("/");
+			//
+			List<Station> stations = new ArrayList<>();
+			for(String name : names) {
+				
+				System.out.println(name + ", " + sidoName);
+				sc.nextLine(); // 엔터를 쳐야 api 호출되게...
+				List<Station> station = pm.listStationsBySido(name);
+				stations.addAll(station);
+			}
 			for (Station station : stations) {
 				/*
 				 * 실제로 이렇게 단순하지 않음
@@ -42,9 +55,18 @@ public class StationService {
 				 *  2) 있으면 업데이트 됐을 수 있기때문에 update 가 되어야 함
 				 *  3) 관측소가 없어짐!!!!
 				 */
+				System.out.println(station);
 				stationDao.insertStation(station);
 			}
 			
 		}
+	}
+
+	public Station findBySeq(Integer stationSeq) {
+		return stationDao.findBySeq(stationSeq);
+	}
+
+	public List<Station> findStationsBySido(String sido) {
+		return stationDao.findStationsBySido(sido);
 	}
 }

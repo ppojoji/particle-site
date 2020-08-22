@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import github.ppojoji.pmalert.dto.PmData;
 import github.ppojoji.pmalert.dto.Station;
 
 // @SpringBootTest
@@ -22,5 +23,15 @@ class PmApiTest {
 			System.out.println(s);
 		}
 	}
-
+	
+	@Test
+	void test1() {
+		PmApi pm = new PmApi();
+		
+		List<PmData> pmData = pm.queryHourlyPmData("서울");
+//		System.out.println(stations);
+		for (PmData p : pmData) {
+			System.out.println(p);
+		}
+	}
 }

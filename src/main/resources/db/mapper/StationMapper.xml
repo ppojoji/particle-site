@@ -7,4 +7,23 @@
 		insert into Station(station_name,station_addr,station_lat,station_lng,sido)
 		values(#{station_name},#{station_addr},#{station_lat},#{station_lng},#{sido}) 
 	</insert>
+	
+	<select id="findStationByName" parameterType="Map" resultType="Station">
+		select * 
+		from station 
+		where station_name=#{name}
+		and sido=#{sido}
+	</select>
+	
+	<select id="findBySeq" parameterType="Integer" resultType="Station" >
+		select * 
+		from station 
+		where seq=#{seq}
+	</select>
+	
+	<select id="findStationsBySido" parameterType="String" resultType="Station">
+		select * 
+		from station 
+		where sido=#{sido}
+	</select>
 </mapper>

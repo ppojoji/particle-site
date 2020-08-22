@@ -10,20 +10,28 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import github.ppojoji.pmalert.dao.PmDataDao;
+import github.ppojoji.pmalert.dao.StationDao;
 import github.ppojoji.pmalert.dto.PmData;
 import github.ppojoji.pmalert.dto.Station;
 
 @Service
 public class PmApi {
-
+	@Autowired
+	StationDao stationDao;
 	/**
 	 * 주어진 시도에 속하는 관측소를 로드합니다.
 	 * 
 	 * @param sidoName - '서울', '경기' 등 17개 시도 이름
 	 * @return 시도별 관측소들
 	 */
+	final static Logger logger = LoggerFactory.getLogger(PmApi.class);
+	
 	public List<Station> listStationsBySido(String sidoName) {
 		String urlTemplate = "http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc/getMsrstnList?serviceKey=RHJDYwDpuFiFtejEpchEWBkx8Uy8XrZVPSkmTOd%2BVk2qUO7t8HOUGnBHj63GhpiHfWxgxEYQy0MeQFK2Ysh6kg%3D%3D&numOfRows=999&pageNo=1&addr=@sido&stationName=&";
 		
@@ -117,12 +125,20 @@ public class PmApi {
 					</item>
 				 */
 				String name = item.select("stationName").text();
-				String time = item.select("dataTime").text();
-				Double pm100 =  asDouble(item.select("pm10Value").text());
-				Double pm25 =  asDouble(item.select("pm25Value").text());
-				LocalDateTime dtime = LocalDateTime.parse(time.replace(' ', 'T') + ":00");
-				PmData pm = new PmData(pm25, pm100, name, dtime);
-				dataList.add(pm);
+				System.out.println("[관측소] [" + name + "]");
+				Station station = stationDao.findStationByName(name,sidoName);
+				if (station == null) {
+					// TODO 이렇게 새로운 관측소가 나오면 관측소를 집어넣어야 함
+					logger.warn("새로운 관측소 발견: " + name + "(" + sidoName + ")");
+					// throw new RuntimeException("새로운 관측소 발견: " + name + "(" + sidoName + ")");
+				} else {
+					String time = item.select("dataTime").text();
+					Double pm100 =  asDouble(item.select("pm10Value").text());
+					Double pm25 =  asDouble(item.select("pm25Value").text());
+					LocalDateTime dtime = LocalDateTime.parse(time.replace(' ', 'T') + ":00");
+					PmData pm = new PmData(pm25, pm100, station.getSeq(), dtime);
+					dataList.add(pm);					
+				}
 			}
 			return dataList;
 		} catch (IOException e) {

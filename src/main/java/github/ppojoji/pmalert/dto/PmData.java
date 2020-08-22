@@ -1,17 +1,19 @@
 package github.ppojoji.pmalert.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PmData {
 	private int seq;
 	private Double pm25;
 	private Double pm100;
-	private String station;
+	private Integer station;
+//	private Station station;
 	private LocalDateTime time;
 	
 	public PmData() {
 	}
-	public PmData(Double pm25, Double pm100, String station, LocalDateTime time) {
+	public PmData(Double pm25, Double pm100, Integer station, LocalDateTime time) {
 		super();
 		this.pm25 = pm25;
 		this.pm100 = pm100;
@@ -37,10 +39,10 @@ public class PmData {
 	public void setPm100(Double pm100) {
 		this.pm100 = pm100;
 	}
-	public String getStation() {
+	public Integer getStation() {
 		return station;
 	}
-	public void setStation(String station) {
+	public void setStation(Integer station) {
 		this.station = station;
 	}
 	public LocalDateTime getTime() {
@@ -54,5 +56,4 @@ public class PmData {
 		return "PmData [seq=" + seq + ", pm25=" + pm25 + ", pm100=" + pm100 + ", station=" + station + ", time=" + time
 				+ "]";
 	}
-	
 }
