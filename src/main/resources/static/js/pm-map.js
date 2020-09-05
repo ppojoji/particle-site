@@ -83,7 +83,7 @@ $(document).ready(function() {
 			//      몇시 데이터인지도 html로 같이 조립해줘야 함
 			var recentData = station.pmData[station.pmData.length-1];
 			infowin.setContent(`
-			<div class="pm-box">
+			<div class="pm-box" data-seq="${station.seq}">
 				<h4 class="station-name">${station.station_name}</h4>
 				<ul class="pm-data">
 					<li class="pm-25">${recentData.pm25}</li>
@@ -91,6 +91,7 @@ $(document).ready(function() {
 				</ul>
 			</div>
 			`);
+			infowin.setZIndex(1);
 			 //console.log('클릭!');
 			map.panTo(new kakao.maps.LatLng(station.station_lat,station.station_lng));
 		});
@@ -113,7 +114,7 @@ $(document).ready(function() {
 				position: new kakao.maps.LatLng(stations[i].station_lat, stations[i].station_lng)
 			});
 			m.setMap(map);
-			markerClick(m, stations[i]);
+			markerClick(m, stations[i], i);
 			
 			// 마커에 클릭이벤트를 등록합니다
 			
@@ -143,5 +144,19 @@ $(document).ready(function() {
 	});
 	initMap();
 	loadStationsBySido('경기');
+	
+	$(document).on('click', '.pm-box', (e) => {
+		var seq = $(e.target).closest('.pm-box').data('seq');
+		var target = stations.find((station) => {
+			if (station.seq === seq) {
+				return true;
+			} else {
+				return false;
+			}
+		});
+		// var target = stations.find((station) => station.seq === seq);
+		// console.log(target);
+		window.popup.show(target);
+	});
 	//  renderMarkers();
 })

@@ -29,6 +29,13 @@ public class PmDataController {
 	@ResponseBody
 	public Object PmDataByStation(@PathVariable Integer stationSeq) {
 		Map<String, Object> res = new HashMap<String, Object>();
+		/**
+		 * FIXME - 현재 관측소의 모든 데이터를 전부 읽어들임
+		 *       - 그런데 화면에서는 최근 데이터 1건만 사용해서 INFOWIN에 렌더링함
+		 *       - 최근 데이터 1건만 보내면 됨
+		 *       
+		 *      PmDataByStation(stationSeq, 1);
+		 */
 		List<PmData> list = pmDataService.PmDataByStation(stationSeq);
 		Station station = stationService.findBySeq(stationSeq);
 		res.put("station", station);
