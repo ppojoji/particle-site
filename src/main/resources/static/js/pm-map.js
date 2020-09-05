@@ -72,7 +72,7 @@ $(document).ready(function() {
 		// markers.splice(0, markers.length);
 	}
 	/**
-	 * 머코 쿨락 아밴투룰 둥록합니다.
+	 * 마크 클릭 이벤트를 등록합니다.
 	 */
 	function markerClick(marker, station) {
 		kakao.maps.event.addListener(marker, 'click', function() {
@@ -80,11 +80,32 @@ $(document).ready(function() {
 			
 			infowin.open(map, marker);
 			// TODO INFOWIN 디자인 필요함
-			//      이 안에 PM 데이터를 같이 출력하고 싶음
-			infowin.setContent(`<h4 class="infowin-title">${station.station_name}</h4>`);
-			// console.log('클릭!');
+			//      몇시 데이터인지도 html로 같이 조립해줘야 함
+			var recentData = station.pmData[station.pmData.length-1];
+			infowin.setContent(`
+			<div class="pm-box">
+				<h4 class="station-name">${station.station_name}</h4>
+				<ul class="pm-data">
+					<li class="pm-25">${recentData.pm25}</li>
+					<li class="pm-100">${recentData.pm100}</li>
+				</ul>
+			</div>
+			`);
+			 //console.log('클릭!');
+			map.panTo(new kakao.maps.LatLng(station.station_lat,station.station_lng));
 		});
 	}
+	
+	//지도 이동 이벤트 핸들러
+	function moveKakaoMap(self){
+	    
+	    var center = map.getCenter(), 
+	        lat = center.getLat(),
+	        lng = center.getLng();
+
+	    self.href = 'https://map.kakao.com/link/map/' + encodeURIComponent(`${station.station_name}`) + ',' + lat + ',' + lng; 
+	}
+	
 	function renderMarkers() {
 		clearMarkers();
 		for(var i = 0 ; i < stations.length ; i++) {

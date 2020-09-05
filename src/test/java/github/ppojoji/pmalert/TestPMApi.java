@@ -1,10 +1,12 @@
 package github.ppojoji.pmalert;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.junit.jupiter.api.Test;
 
 public class TestPMApi {
 	/*
@@ -23,5 +25,12 @@ public class TestPMApi {
 		System.out.println(doc.toString());
 		
 		
+	}
+	
+	@Test
+	void test_reformat() { 
+		LocalDate d = LocalDate.parse("2020-08-24"); 
+		d = d.plusDays(1); 
+		System.out.println(d); 
 	}
 }

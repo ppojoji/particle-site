@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import github.ppojoji.pmalert.dao.PmDataDao;
 import github.ppojoji.pmalert.dao.StationDao;
 import github.ppojoji.pmalert.dto.PmData;
 import github.ppojoji.pmalert.dto.Station;
@@ -146,5 +145,45 @@ public class PmApi {
 		}
 		
 	}
+	
+	public List<PmData> queryPmDataByStation(Station station) { 
+		String urlTemplate = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey=@APIKEY&numOfRows=999&pageNo=1&stationName=@STATION&dataTerm=@TERM&ver=1.3&"; 
+		
+		String url = urlTemplate.replace("@APIKEY", "RHJDYwDpuFiFtejEpchEWBkx8Uy8XrZVPSkmTOd%2BVk2qUO7t8HOUGnBHj63GhpiHfWxgxEYQy0MeQFK2Ysh6kg%3D%3D") 
+				.replace("@TERM", "DAILY") 
+				.replace("@STATION", station.getStation_name()); 
+		
+		Connection con = Jsoup.connect(url).ignoreContentType(true);
+		try {
+			Document doc = con.get();
+			System.out.println(doc.toString());
+			String selector = "response > body > items > item";
+			Elements items = doc.select(selector);
+			List<PmData> dataList = new  ArrayList<>();
+			for(int i = 0 ; i < items.size(); i++) {
+				Element item = items.get(i);
+				
+				String name = item.select("stationName").text();
+				System.out.println("[관측소] [" + name + "]");
+				//Station station = stationDao.findStationByName(name,sidoName);
+			
+					String time = item.select("dataTime").text();
+					Double pm100 =  asDouble(item.select("pm10Value").text());
+					Double pm25 =  asDouble(item.select("pm25Value").text());
+					String formattedTime = reformatHour(time.replace(' ', 'T') + ":00"); 
+					LocalDateTime dtime = LocalDateTime.parse(formattedTime); 
+					PmData pm = new PmData(pm25, pm100, station.getSeq(), dtime);
+					dataList.add(pm);					
+				}
+			
+			return dataList;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
+	private String reformatHour(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	} 
 }
