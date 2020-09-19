@@ -36,11 +36,15 @@ public class PmDataController {
 		 *       
 		 *      PmDataByStation(stationSeq, 1);
 		 */
+		/**
+		 * FIXME - 주어진 관측소가 북마크되어있는지를 나타내는 값을 추가해줘야 합니다.
+		 */
 		List<PmData> list = pmDataService.PmDataByStation(stationSeq);
 		Station station = stationService.findBySeq(stationSeq);
 		res.put("station", station);
 		res.put("pmdata", list);
 		res.put("success", true);
+		res.put("bookmared", false); // 일단 false로 해둠
 		return res; 
 	}
 	@GetMapping(value = "/pm/loadSido/{Seq}")

@@ -11,18 +11,31 @@
 <link href="/css/common.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+<script type="text/javascript" src="/js/user/user-info.js"></script>
 </head>
-<body> 
-	<select id="sido">
-		<option value="">[시도선택]</option>
-		<!-- <option value="서울">서울</option>
-		<option value="경기">경기</option> -->
-	</select>
+<body>
+	<div class="top-nav">
+		<select id="sido">
+			<option value="">[시도선택]</option>
+			<!-- <option value="서울">서울</option>
+			<option value="경기">경기</option> -->
+		</select>
+		<div class="user-info">
+			<!-- <a href="#">adn</a> | <a href="/logout">LOGOUT</a> -->
+			<a class="login-link hide-it" href="/login.html">LOGIN</a>
+		</div>
+	</div>
 	<div id="map" style="width:100%;height:700px;"></div> 
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=39b4e06cd0f6e6d965832dc877594b89"></script> 
 	
 	<div id="station-popup" class="hide-it">
-		<h3><span class="material-icons btn-close">keyboard_arrow_left</span><span id="stationName"></span> 미세먼지 차트</h3>
+		<h3><span class="material-icons btn-close">keyboard_arrow_left</span>
+			<span id="stationName"></span>
+			<span class="bookmark-icon">
+				<span class="material-icons bookmark-on">turned_in</span>
+				<span class="material-icons bookmark-off">turned_in_not</span>
+			</span>
+			</h3>
 		<div id="pmchart"></div>
 	</div>
 </body>

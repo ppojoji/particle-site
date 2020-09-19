@@ -26,4 +26,22 @@
 		from station 
 		where sido=#{sido}
 	</select>
+	
+	<select id="findBookmark" parameterType="Map" resultType="Map">
+		select * 
+		from station_bookmark 
+		where user = #{userSeq}
+		and station = #{stationSeq}
+	</select>
+	
+	<insert id="insertBookmark" parameterType="Map">
+		INSERT INTO station_bookmark (user, station) 
+		VALUES (#{userSeq}, #{stationSeq});
+	</insert>
+	
+	<delete id="deleteBookmark" parameterType="Map">
+		delete from station_bookmark 
+		where user = #{userSeq} 
+		and station = #{stationSeq}
+	</delete>
 </mapper>

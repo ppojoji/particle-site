@@ -2,14 +2,19 @@ package github.ppojoji.pmalert.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import github.ppojoji.pmalert.Res;
 import github.ppojoji.pmalert.dto.PmData;
 import github.ppojoji.pmalert.dto.Station;
+import github.ppojoji.pmalert.dto.User;
 import github.ppojoji.pmalert.service.PmDataService;
 import github.ppojoji.pmalert.service.StationService;
 
@@ -49,5 +54,11 @@ public class StationController {
 		}
 		return list;
 	}
-
+	@PostMapping(value = "/station/bookmark")
+	@ResponseBody
+	public Object BookMark(@RequestParam Integer stationSeq , HttpSession session) {
+		User user = (User)session.getAttribute("LOGIN_USER");
+		boolean bookmarked = stationService.toggleBookmark(user.getSeq(),stationSeq);
+		return Res.success("bookmarked", bookmarked);
+	}
 }

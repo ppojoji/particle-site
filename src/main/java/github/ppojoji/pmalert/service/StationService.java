@@ -2,6 +2,7 @@ package github.ppojoji.pmalert.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,28 @@ public class StationService {
 	 */
 	public Object findStationsWithRecentPm(String sido) {
 		return null;
+	}
+	/**
+	 * 주어진 사용자가 관측소를 북마크함. 만일 북마크가 이미 존재하면 북마크를 제거함
+	 * @param userSeq - 사용자 seq 
+	 * @param stationSeq - 관측소 seq
+	 * @return
+	 */
+	public boolean toggleBookmark(Integer userSeq, Integer stationSeq) {
+		// 북마크가 있으면 없앰
+		// 북마크 없으면 추가함
+		// true(북마크 추가했다) , false(북마크 없앴다)
+		
+		Map<String, Object> bookMark = stationDao.findBookmark(userSeq, stationSeq);
+		System.out.println(bookMark);
+		if (bookMark == null) {
+			stationDao.insertBookmark(userSeq, stationSeq);
+			return true;
+		} else {
+			stationDao.deleteBookmark(userSeq, stationSeq);
+			return false;
+		}
+		// return false;
 	}
 
 	

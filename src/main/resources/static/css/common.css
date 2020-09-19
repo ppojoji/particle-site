@@ -26,5 +26,8 @@
 }
 
 .hide-it {
-	display: none;
+	display: none !important;
+}
+.user-info {
+	float: right;
 }

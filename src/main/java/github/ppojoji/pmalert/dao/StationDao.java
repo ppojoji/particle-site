@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import github.ppojoji.pmalert.Res;
 import github.ppojoji.pmalert.dto.Station;
 
 @Repository
@@ -33,5 +34,18 @@ public class StationDao {
 
 	public List<Station> findStationsBySido(String sido) {
 		return session.selectList("StationMapper.findStationsBySido", sido);
+	}
+
+	public Map<String, Object> findBookmark(Integer userSeq, Integer stationSeq) {
+		return session.selectOne("StationMapper.findBookmark", Res.success("userSeq" , userSeq , "stationSeq",stationSeq));
+	}
+
+	public void insertBookmark(Integer userSeq, Integer stationSeq) {
+		session.insert("StationMapper.insertBookmark", Res.success("userSeq" , userSeq , "stationSeq",stationSeq));
+	}
+
+	public void deleteBookmark(Integer userSeq, Integer stationSeq) {
+		session.delete("StationMapper.deleteBookmark", Res.success("userSeq" , userSeq , "stationSeq",stationSeq));
+		
 	}
 }
