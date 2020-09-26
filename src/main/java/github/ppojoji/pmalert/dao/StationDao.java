@@ -8,8 +8,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import github.ppojoji.pmalert.PmException;
 import github.ppojoji.pmalert.Res;
 import github.ppojoji.pmalert.dto.Station;
+import github.ppojoji.pmalert.dto.User;
 
 @Repository
 public class StationDao {
@@ -47,5 +49,31 @@ public class StationDao {
 	public void deleteBookmark(Integer userSeq, Integer stationSeq) {
 		session.delete("StationMapper.deleteBookmark", Res.success("userSeq" , userSeq , "stationSeq",stationSeq));
 		
+	}
+
+	public User updatePmData(Integer userSeq, Integer stationSeq, String pmType, Integer pmValue) {
+		
+		String pmColumn = checkPmColumn(pmType);
+		System.out.printf("user: %d, station: %d, type: %s, value: %d\n", userSeq, stationSeq, pmType, pmValue);
+		session.update("StationMapper.updatePmData" ,Res.success(
+			"userSeq",userSeq,
+			"stationSeq",stationSeq,
+			"pmType",pmColumn,
+			"pmValue",pmValue)
+		);
+		
+		return null;
+	}
+
+	private String checkPmColumn(String pmType) {
+		if (pmType.equals("pm100") || pmType.equals("pm25")) {
+			return pmType;
+		} else {
+			throw new PmException(400, "PM_TYPE_ERROR");
+		}
+	}
+
+	public Map<String, Object> findNotification(Integer seq, Integer stationSeq) {
+		return session.selectOne("StationMapper.findNotification", Res.success("seq",seq , "stationSeq",stationSeq));
 	}
 }

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import github.ppojoji.pmalert.dto.PmData;
 import github.ppojoji.pmalert.dto.Station;
+import github.ppojoji.pmalert.dto.StationBookmark;
+import github.ppojoji.pmalert.dto.User;
 import github.ppojoji.pmalert.service.PmDataService;
 import github.ppojoji.pmalert.service.StationService;
 	
@@ -27,7 +31,7 @@ public class PmDataController {
 	
 	@GetMapping(value = "/pm/{stationSeq}")
 	@ResponseBody
-	public Object PmDataByStation(@PathVariable Integer stationSeq) {
+	public Object PmDataByStation(@PathVariable Integer stationSeq , HttpSession session) {
 		Map<String, Object> res = new HashMap<String, Object>();
 		/**
 		 * FIXME - 현재 관측소의 모든 데이터를 전부 읽어들임
@@ -36,15 +40,34 @@ public class PmDataController {
 		 *       
 		 *      PmDataByStation(stationSeq, 1);
 		 */
-		/**
-		 * FIXME - 주어진 관측소가 북마크되어있는지를 나타내는 값을 추가해줘야 합니다.
+		User user = (User)session.getAttribute("LOGIN_USER"); // user == null
+		/*
+		 * 로그인이 안되어 있으면
+		 * 북마크 여부도 판별할 수 없음
 		 */
+		boolean bookMarked = false;
+		if (user != null) {
+			// StationBookmark bmk = stationService.findBookmark(user.getSeq(), stationSeq);
+			Integer userSeq = user.getSeq(); // null.getSeq() Null Pointer Exception
+			bookMarked = stationService.isBookMarked(userSeq, stationSeq);
+			Map<String, Object> notifData = stationService.findNotification(user.getSeq(), stationSeq);
+			System.out.println("[notif data]" + notifData);
+			res.put("pm25", notifData == null ? 0 : notifData.get("pm25"));
+			res.put("pm100",notifData == null ? 0 : notifData.get("pm100"));
+		} else {
+			res.put("pm25", 0);
+			res.put("pm100", 0);
+		}
+		
 		List<PmData> list = pmDataService.PmDataByStation(stationSeq);
 		Station station = stationService.findBySeq(stationSeq);
 		res.put("station", station);
 		res.put("pmdata", list);
+//		res.put("pm25",0);
+//		res.put("pm100",0);
 		res.put("success", true);
-		res.put("bookmared", false); // 일단 false로 해둠
+		
+		res.put("bookmarked", bookMarked); // 일단 false로 해둠
 		return res; 
 	}
 	@GetMapping(value = "/pm/loadSido/{Seq}")

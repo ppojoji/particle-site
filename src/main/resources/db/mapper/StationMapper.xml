@@ -44,4 +44,18 @@
 		where user = #{userSeq} 
 		and station = #{stationSeq}
 	</delete>
+	
+	<update id="updatePmData" parameterType="Map">
+		update station_bookmark 
+		set ${pmType} = #{pmValue}
+		where user = #{userSeq}
+		and station = #{stationSeq}    
+	</update>
+	
+	<select id="findNotification" parameterType="Map" resultType="Map">
+		select * 
+		from station_bookmark 
+		where user = #{seq} 
+		and station = #{stationSeq}
+	</select>
 </mapper>

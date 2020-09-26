@@ -14,4 +14,10 @@
 		WHERE EMAIL = #{email} 
 		AND PASSWORD = #{pwd}
 	</select>
+	
+	<select id="findByEmail" parameterType="String" resultType="User">
+		SELECT * 
+		FROM USER
+		WHERE EMAIL = #{email} 
+	</select>
 </mapper>

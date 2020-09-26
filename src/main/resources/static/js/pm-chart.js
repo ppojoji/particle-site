@@ -29,7 +29,17 @@ function StationPopup() {
 				)
 				
 				$("#stationName").text(`[${res.station.sido}/${res.station.station_name}]`);
-				wrapper.find('.bookmark-on').addClass('hide-it');
+				if (res.bookmarked) {
+					 wrapper.find('.bookmark-on').removeClass('hide-it');
+					 wrapper.find('.bookmark-off').addClass('hide-it');
+				} else {
+					 wrapper.find('.bookmark-on').addClass('hide-it');
+					 wrapper.find('.bookmark-off').removeClass('hide-it');
+				}
+				// FIXME 로그인 했을때(AND 북마크 했을때)에만 PM 설정 양식을 보여줘야 합니다.
+				wrapper.find('#notif-pm25').val(res.pm25);
+				wrapper.find('#notif-pm100').val(res.pm100);
+				// var $(".bookmark-icon").val();
 //				if(loginUser) {
 //					
 //				} else {
@@ -59,6 +69,22 @@ function StationPopup() {
 			}
 		})
 	}
+	
+	function updateNofif(pmType , pmValue){
+		$.ajax({
+			url : '/station/notification' ,
+			method : 'POST' , 
+			data: {
+				stationSeq : curStation.seq
+				,pmType : pmType
+				,pmValue : pmValue
+			} ,
+			success(res){
+				console.log(res);
+			}
+		})
+	}
+	
 	function close(){
 		wrapper.addClass('hide-it')
 	}
@@ -67,10 +93,23 @@ function StationPopup() {
 	})
 	
 	wrapper.find('.bookmark-on, .bookmark-off').on('click', function(e){
-		console.log('ok????')
-		toggleBookmark()
+		if(loginUser != null){
+			toggleBookmark()
+		}else {
+			alert("로그인 하세요.");
+		}
+		//console.log('ok????')
+		
 	})
 	
+	wrapper.find('#notif-pm25').on('change',function(e){
+		//console.log(e.target.value);
+		updateNofif("pm25",e.target.value); 
+	})
+	wrapper.find('#notif-pm100').on('change',function(e){
+		//console.log(e.target.value);
+		updateNofif("pm100",e.target.value); 
+	})
 	return {
 		show(station) {
 			console.log('popup!!!', station);

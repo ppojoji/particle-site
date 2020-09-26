@@ -28,5 +28,8 @@ public class UserDao {
 				"UserMapper.login", 
 				Res.success("email", email, "pwd", pwd));
 	}
+	public User findByEmail(String email) {
+		return sqlSession.selectOne("UserMapper.findByEmail",email);
+	}
 
 }

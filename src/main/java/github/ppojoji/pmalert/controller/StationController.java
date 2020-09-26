@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import github.ppojoji.pmalert.PmException;
 import github.ppojoji.pmalert.Res;
 import github.ppojoji.pmalert.dto.PmData;
 import github.ppojoji.pmalert.dto.Station;
@@ -58,7 +59,22 @@ public class StationController {
 	@ResponseBody
 	public Object BookMark(@RequestParam Integer stationSeq , HttpSession session) {
 		User user = (User)session.getAttribute("LOGIN_USER");
+		// FIXME 이렇게 로그인 확인을 사방팔방에서 다 하면 안좋음(인터셉터를 달아서 로그인 확인 로직을 한군데로 몰아넣음)
+		if (user == null) {
+			throw new PmException(401, "LOGIN_REQUIRED");
+		}
 		boolean bookmarked = stationService.toggleBookmark(user.getSeq(),stationSeq);
 		return Res.success("bookmarked", bookmarked);
+	}
+	
+	@PostMapping(value = "/station/notification")
+	@ResponseBody
+	public Object notification(HttpSession session , 
+			@RequestParam Integer stationSeq, 
+			@RequestParam String pmType , 
+			@RequestParam Integer pmValue) {
+		User user = (User) session.getAttribute("LOGIN_USER");
+		stationService.updatePmData(user.getSeq(),stationSeq,pmType,pmValue);
+		return Res.success();
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import github.ppojoji.pmalert.dao.StationDao;
 import github.ppojoji.pmalert.dto.Station;
+import github.ppojoji.pmalert.dto.User;
 import github.ppojoji.pmalert.service.pmapi.PmApi;
 
 @Service
@@ -101,5 +102,22 @@ public class StationService {
 		// return false;
 	}
 
+	public boolean isBookMarked(Integer userSeq, Integer stationSeq) {
+		Map<String, Object> bookMark = stationDao.findBookmark(userSeq, stationSeq);
+//		if(bookMark != null) {
+//			return true;
+//		}else {
+//			return false;
+//		}
+		return bookMark != null;
+	}
+
+	public User updatePmData(Integer userSeq, Integer stationSeq, String pmType, Integer pmValue) {
+		return stationDao.updatePmData(userSeq,stationSeq,pmType,pmValue);
+	}
+
+	public Map<String, Object> findNotification(Integer seq, Integer stationSeq) {
+		return stationDao.findNotification(seq,stationSeq);
+	}
 	
 }

@@ -22,7 +22,8 @@ public class UserController {
 	@ResponseBody
 	public Object Join(@RequestParam String email , @RequestParam String Pwd) {
 		System.out.println(email + " , " + Pwd); 
-		userService.join(email,Pwd);
+		User user = userService.join(email,Pwd);
+		
 //		Map map = new HashMap<String, Object>();
 //		map.put("email", email);
 //		map.put("Pwd", Pwd);
