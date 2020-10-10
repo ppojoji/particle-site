@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -76,5 +78,23 @@ public class StationController {
 		User user = (User) session.getAttribute("LOGIN_USER");
 		stationService.updatePmData(user.getSeq(),stationSeq,pmType,pmValue);
 		return Res.success();
+	}
+	@RequestMapping(value = "/station/StationSeqDel" , method=RequestMethod.POST)
+	@ResponseBody
+	public Object DeleteBookMark(@RequestParam Integer StationSeq,HttpSession session) {
+		User user = (User)session.getAttribute("LOGIN_USER");
+		Boolean Deleted = stationService.DeleteBookMark(user.getSeq() ,StationSeq);
+		return Deleted;
+	}
+	@RequestMapping(value = "/station/UpdateNotify", method = RequestMethod.POST)
+	@ResponseBody
+	public Object UpdateNotify(
+			@RequestParam Integer StationSeq,
+			@RequestParam Boolean notify, // false
+			HttpSession session) {
+		User user = (User)session.getAttribute("LOGIN_USER");
+		stationService.UpdateNotify(user.getSeq(),StationSeq, notify);
+		
+		return notify; 
 	}
 }

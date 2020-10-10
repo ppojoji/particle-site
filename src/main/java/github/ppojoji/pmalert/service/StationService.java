@@ -8,6 +8,7 @@ import java.util.Scanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import github.ppojoji.pmalert.PmException;
 import github.ppojoji.pmalert.dao.StationDao;
 import github.ppojoji.pmalert.dto.Station;
 import github.ppojoji.pmalert.dto.User;
@@ -113,11 +114,34 @@ public class StationService {
 	}
 
 	public User updatePmData(Integer userSeq, Integer stationSeq, String pmType, Integer pmValue) {
+		if (pmValue == null ) {
+			throw new PmException(400, "NULL_PM_VALUE");
+		}
+		if (pmValue < 0) {
+			throw new PmException(400, "NEGATIVE_PM_VALUE");
+		}
 		return stationDao.updatePmData(userSeq,stationSeq,pmType,pmValue);
 	}
 
 	public Map<String, Object> findNotification(Integer seq, Integer stationSeq) {
 		return stationDao.findNotification(seq,stationSeq);
+	}
+	/**
+	 * 주어진 사용자가 북마크한 관측소 조회
+	 * @param userSeq
+	 * @return
+	 */
+	public List<Map<String,Object>> findBookMarkByUser(Integer userSeq) {
+		return stationDao.findBookMarkByUser(userSeq);
+	}
+
+	public Boolean DeleteBookMark(Integer userSeq, Integer stationSeq) {
+		return stationDao.DeleteBookMark(userSeq,stationSeq);
+	}
+
+	public void UpdateNotify(Integer UserSeq, Integer stationSeq, Boolean notify) {
+		stationDao.UpdateNotify(UserSeq,stationSeq,notify);
+		
 	}
 	
 }

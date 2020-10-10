@@ -76,4 +76,27 @@ public class StationDao {
 	public Map<String, Object> findNotification(Integer seq, Integer stationSeq) {
 		return session.selectOne("StationMapper.findNotification", Res.success("seq",seq , "stationSeq",stationSeq));
 	}
+
+	public List<Map<String, Object>> findBookMarkByUser(Integer userSeq) {
+		return session.selectList("StationMapper.findBookMarkByUser", userSeq);
+	}
+
+	public Boolean DeleteBookMark(Integer userSeq, Integer stationSeq) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("userSeq", userSeq);
+		map.put("stationSeq", stationSeq);
+		int cnt = session.delete("StationMapper.DeleteBookMark", map);
+		
+		return cnt == 1;
+	}
+
+	public void UpdateNotify(Integer userSeq, Integer stationSeq, Boolean notify) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("userSeq", userSeq);
+		map.put("stationSeq", stationSeq);
+		map.put("notify",notify ? "Y" : "N");
+		
+		session.update("StationMapper.UpdateNotify",map);
+		
+	}
 }

@@ -1,10 +1,13 @@
 package github.ppojoji.pmalert.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import github.ppojoji.pmalert.PmException;
 import github.ppojoji.pmalert.dao.UserDao;
+import github.ppojoji.pmalert.dto.Station;
 import github.ppojoji.pmalert.dto.User;
 
 @Service
@@ -36,5 +39,6 @@ public class UserService {
 	public User login(String email, String pwd) {
 		return userDao.login(email,pwd);
 	}
+
 
 }

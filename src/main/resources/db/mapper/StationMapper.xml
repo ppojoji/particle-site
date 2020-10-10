@@ -58,4 +58,25 @@
 		where user = #{seq} 
 		and station = #{stationSeq}
 	</select>
+	
+	<select id="findBookMarkByUser" parameterType="Integer" resultType="map">
+		SELECT * 
+		FROM station_bookmark sb 
+		JOIN station s 
+		ON  s.seq = sb.station
+		WHERE sb.user = #{userSeq}
+	</select>
+	
+	<delete id="DeleteBookMark" parameterType="map">
+		delete from station_bookmark
+		where user = #{userSeq} 
+		 and station = #{stationSeq}
+	</delete>
+	
+	<update id="UpdateNotify" parameterType="map">
+		update station_bookmark 
+ 		set notify = #{notify}
+ 		where user = #{userSeq}
+ 		and station = #{stationSeq}
+	</update>
 </mapper>

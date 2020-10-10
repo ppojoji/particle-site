@@ -1,5 +1,8 @@
 package github.ppojoji.pmalert.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +14,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import github.ppojoji.pmalert.Res;
 import github.ppojoji.pmalert.dto.User;
+import github.ppojoji.pmalert.service.StationService;
 import github.ppojoji.pmalert.service.UserService;
 
 @Controller
 public class UserController {
 	@Autowired
 	UserService userService;
+	@Autowired
+	StationService stationService;
 	
 	@RequestMapping(value="/join.do" ,method = RequestMethod.POST)
 	@ResponseBody
@@ -55,5 +61,14 @@ public class UserController {
 		} else {
 			return Res.success("user" , user);
 		}
+	}
+	
+	@RequestMapping(value = "/user/bookMark" ,method = RequestMethod.GET)
+	@ResponseBody
+	public Object userBookMark(HttpSession session) {
+		User user = (User) session.getAttribute("LOGIN_USER");
+		
+		List<Map<String,Object>> stationList = stationService.findBookMarkByUser(user.getSeq());
+		return stationList;
 	}
 }
