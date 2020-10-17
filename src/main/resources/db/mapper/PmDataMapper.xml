@@ -12,4 +12,21 @@
 		from pmdata 
 		where station = #{station}
 	</select>
+	<select id="findRecentPmList" resultType="PmData">
+		SELECT
+		   st.station_name,
+		   st.sido,
+			pm.*
+		FROM station st
+		JOIN (SELECT
+			   pm.seq,
+				pm.station,
+				MAX(pm.time) AS recent_time
+				FROM pmdata pm
+				GROUP BY pm.station
+			) rpm
+		  ON st.seq = rpm.station
+		JOIN pmdata pm 
+		  ON rpm.station = pm.station AND rpm.recent_time = pm.time
+	</select>
 </mapper>

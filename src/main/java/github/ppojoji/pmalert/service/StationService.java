@@ -23,6 +23,26 @@ public class StationService {
 	@Autowired
 	StationDao stationDao;
 	
+	
+	/**
+	 * 모든 관측소를 읽어들여서 데이터베이스를 업데이트 합니다.
+	 * 1) 새로운 관측소가 생길 수 있음
+	 * 2) 관측소가 없어지는 경우(?)가 있는지는 모르겠음
+	 */
+	public void synchronizeAllStations() {
+		List<Station> stations = pm.findAllStation();
+		for (Station station : stations) {
+			/*
+			 * 실제로 이렇게 단순하지 않음
+			 * 
+			 *  1) 관측소가 없는거면 새로 넣음
+			 *  2) 있으면 업데이트 됐을 수 있기때문에 update 가 되어야 함
+			 *  3) 관측소가 없어짐!!!!
+			 */
+			// System.out.println(station);
+			stationDao.insertStation(station);
+		}
+	}
 	/**
 	 * 시도별 관측소를 조회해서 디비를 업데이트 합니다.
 	 * 

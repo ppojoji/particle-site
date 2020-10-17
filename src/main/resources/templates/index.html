@@ -1,10 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>뭐지?</title>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/pm-map.js"></script>
+<script type="text/javascript" src="/js/pm-chart.js"></script>
+<link href="/css/common.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<script type="text/javascript" src="/js/user/user-info.js"></script>
 </head>
 <body>
-<h3>페이지</h3>
+	<div class="top-nav">
+		<select id="sido">
+			<option value="">[시도선택]</option>
+			<!-- <option value="서울">서울</option>
+			<option value="경기">경기</option> -->
+		</select>
+		<div class="user-info">
+			<!-- <a href="#">adn</a> | <a href="/logout">LOGOUT</a> -->
+			<a class="login-link hide-it" href="/login.html">LOGIN</a>
+		</div>
+	</div>
+	<div id="map" style="width:100%;height:700px;"></div> 
+	<script type="text/javascript" th:src="|//dapi.kakao.com/v2/maps/sdk.js?appkey=${mapApiKey}|"></script> 
+	
+	<div id="station-popup" class="hide-it">
+		<h3><span class="material-icons btn-close">keyboard_arrow_left</span>
+			<span id="stationName"></span>
+			<span class="bookmark-icon">
+				<span class="material-icons bookmark-on">turned_in</span>
+				<span class="material-icons bookmark-off">turned_in_not</span>
+			</span>
+			</h3>
+		<div id="pmchart"></div>
+		<span>PM 2.5</span>
+		<select id="notif-pm25">
+			<option value="0">통보없음</option>
+			<option value="10">10</option>
+			<option value="20">20</option>
+			<option value="30">30</option>
+			<option value="40">40</option>
+			<option value="50">50</option>
+		</select>
+		<span>PM 10.0</span>
+		<select id="notif-pm100">
+			<option value="0">통보없음</option>
+			<option value="10">10</option>
+			<option value="20">20</option>
+			<option value="30">30</option>
+			<option value="40">40</option>
+			<option value="50">50</option>
+		</select>
+	</div>
 </body>
 </html>

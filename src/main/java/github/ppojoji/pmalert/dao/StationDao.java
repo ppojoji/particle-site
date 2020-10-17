@@ -38,6 +38,10 @@ public class StationDao {
 		return session.selectList("StationMapper.findStationsBySido", sido);
 	}
 
+	public List<Station> findAllStations() {
+		return session.selectList("StationMapper.findStationsBySido");
+	}
+
 	public Map<String, Object> findBookmark(Integer userSeq, Integer stationSeq) {
 		return session.selectOne("StationMapper.findBookmark", Res.success("userSeq" , userSeq , "stationSeq",stationSeq));
 	}
@@ -99,4 +103,5 @@ public class StationDao {
 		session.update("StationMapper.UpdateNotify",map);
 		
 	}
+
 }

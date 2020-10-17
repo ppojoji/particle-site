@@ -24,7 +24,12 @@
 	<select id="findStationsBySido" parameterType="String" resultType="Station">
 		select * 
 		from station 
-		where sido=#{sido}
+		where 
+			1 = 1
+		<if test="sido != null">
+			AND
+			sido=#{sido}
+		</if>
 	</select>
 	
 	<select id="findBookmark" parameterType="Map" resultType="Map">
