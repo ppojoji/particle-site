@@ -18,10 +18,10 @@
 	      <th scope="col">password</th>
 	    </tr>
 	  </thead>
-	  <tbody>
+	  <tbody id="myInfo">
 	    <tr>
-	      <td>ppp@naver.com</td>
-	      <td>1111</td>
+	      <td id="email"></td>
+	      <td ><a href="#" id="pass" data-toggle="modal" data-target="#password-modal"></a></td>
 	    </tr>
 	  </tbody>
 	</table>
@@ -53,5 +53,28 @@
 	    </tr>
 	  </tbody>
 	</table>
+<div class="modal" id="password-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">비번 변경</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="">비밀번호를 변경합니다.</p>
+        <div class="alert alert-danger state-msg" role="alert" style="display: none;"></div>
+        <input class="form-control" id="cur-pw" type="text" placeholder="기본 비번 입력">
+        <input class="form-control" id="new-pw" "type="text" placeholder="새로운 비번 입력">
+        <input class="form-control" id="new-pw-check" type="text" placeholder="다시 한번 입력하세요">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-update-pw">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package github.ppojoji.pmalert.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -30,6 +31,20 @@ public class UserDao {
 	}
 	public User findByEmail(String email) {
 		return sqlSession.selectOne("UserMapper.findByEmail",email);
+	}
+	public void updatePass(Integer userSeq, String newPass) {
+		Map<String ,Object> map = new HashMap<String, Object>(); 
+		map.put("userSeq", userSeq);
+		map.put("newPass", newPass);
+		
+		sqlSession.update("UserMapper.updatePass",map);
+	}
+	public User findByUserSeqAndPw(Integer userSeq, String curPass) {
+		Map<String ,Object> map = new HashMap<String, Object>(); 
+		map.put("userSeq", userSeq);
+		map.put("curPass", curPass);
+		
+		return sqlSession.selectOne("UserMapper.findByUserSeqAndPw", map);
 	}
 
 }

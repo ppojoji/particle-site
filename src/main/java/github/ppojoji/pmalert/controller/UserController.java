@@ -71,4 +71,13 @@ public class UserController {
 		List<Map<String,Object>> stationList = stationService.findBookMarkByUser(user.getSeq());
 		return stationList;
 	}
+	@RequestMapping(value = "/user/UpdatePass")
+	@ResponseBody
+	public Object updatePass(@RequestParam String curPass , @RequestParam String newPass, HttpSession session) {
+		User user = (User) session.getAttribute("LOGIN_USER");
+		
+		userService.updatePass(user.getSeq() , curPass,newPass);
+		
+		return Res.success();
+	}
 }

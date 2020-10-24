@@ -98,4 +98,59 @@ $(document).ready(function() {
 			}
 		})
 	}
+	
+	function updatePass(curPass, newPass) {
+		$.ajax({
+			url : "/user/UpdatePass",
+			method : "POST" , 
+			data : {
+				curPass,
+				newPass
+			}, 
+			success(res){
+				console.log(res);
+				
+			},
+			error(err) {
+				var errorCode = err.responseJSON.cause
+				$('#cur-pw').addClass("is-invalid");
+				$('.state-msg').text('비번을 확인하세요').show();
+			}
+		})
+	}
+	
+	function myInfo(){
+		$.ajax({
+			url :"/myInfo.do" ,
+			method : "GET" ,
+			success(res){
+				console.log(res);
+				$('#email').text(res.user.email);
+				$('#pass').text(res.user.password);
+			}
+		})
+	}
+	
+	myInfo();
+	
+	
+	$('#btn-update-pw').click((e) => {
+		var curPw = $('#cur-pw').val();
+		var newPw = $('#new-pw').val();
+		var pwCheck = $('#new-pw-check').val();
+		
+		if(newPw == pwCheck){
+			updatePass(curPw ,newPw );
+		}
+			
+		console.log('ok???')
+	})
+	
+	$("#cur-pw").on('input',function(e){
+		console.log(e.target.value);
+		$('.state-msg').hide();
+		$("#cur-pw").removeClass('is-invalid');
+	})
+	
+	
 })

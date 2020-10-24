@@ -20,4 +20,16 @@
 		FROM USER
 		WHERE EMAIL = #{email} 
 	</select>
+	
+	<update id="updatePass" parameterType="map">
+		update user 
+		set password = #{newPass}
+		where seq = #{userSeq}
+	</update>
+	
+	<select id="findByUserSeqAndPw" resultType="User" parameterType="map">
+		select * 
+		from user 
+		where seq = #{userSeq} and password = #{curPass}
+	</select>
 </mapper>
