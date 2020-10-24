@@ -25,9 +25,10 @@ public class PmDataDao {
 	}
 	/**
 	 * 관측소별 최근 데이터 1건씩을 가져옴
+	 * @param sido 특정 지역의 관측소, null이면 전국 관측소 전부다 조회함
 	 * @return
 	 */
-	public List<PmData> findRecentPmList() {
-		return session.selectList("PmDataMapper.findRecentPmList");
+	public List<PmData> findRecentPmList(String sido) {
+		return session.selectList("PmDataMapper.findRecentPmList",sido);
 	}
 }

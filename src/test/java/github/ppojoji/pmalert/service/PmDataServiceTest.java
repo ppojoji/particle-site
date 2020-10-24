@@ -53,10 +53,14 @@ class PmDataServiceTest {
 	
 	@Test
 	void test_관측소별_최신_데이터_가져오기() {
-		List<PmData> pmList = pmDataDao.findRecentPmList();
+		List<PmData> pmList = pmDataDao.findRecentPmList(null);
 		for (PmData pm : pmList) {
 			System.out.println(pm);
 		}
+		System.out.println(pmList.size()); // 5xx
+		
+		List<PmData> seoul = pmDataDao.findRecentPmList("서울");
+		System.out.println("서울: " + seoul.size());
 	}
 	
 	@Test

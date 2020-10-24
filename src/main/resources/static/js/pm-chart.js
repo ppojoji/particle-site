@@ -8,37 +8,41 @@ function StationPopup() {
 			url : "/pm/" + stationSeq, // '/pm/12'
 			method : 'GET', 
 			success(res) {
-				
-				var chartData = [
-				]
-				for(var i=0;i<res.pmdata.length;i++){
-					res.pmdata[i].time = new Date(res.pmdata[i].time) 
-					chartData.push([res.pmdata[i].time,res.pmdata[i].pm25,res.pmdata[i].pm100])
-				}
-				var chartLabel = ['시간', 'PM2.5' , 'PM10']
-				$('#pmchart').css('width', $('#station-popup').width()-10);
-				var chartDiv = $('#pmchart')[0]
-				
-				var graph = new Dygraph(
-				  chartDiv,
-				  chartData,
-				  {
-				    label: chartLabel ,
-				    valueRange: [0, 260]
-				  }
-				)
-				
-				$("#stationName").text(`[${res.station.sido}/${res.station.station_name}]`);
-				if (res.bookmarked) {
-					 wrapper.find('.bookmark-on').removeClass('hide-it');
-					 wrapper.find('.bookmark-off').addClass('hide-it');
+				if(res.pmdata.length > 0){
+					var chartData = [
+					]
+					for(var i=0;i<res.pmdata.length;i++){
+						res.pmdata[i].time = new Date(res.pmdata[i].time) 
+						chartData.push([res.pmdata[i].time,res.pmdata[i].pm25,res.pmdata[i].pm100])
+					}
+					var chartLabel = ['시간', 'PM2.5' , 'PM10']
+					$('#pmchart').css('width', $('#station-popup').width()-10);
+					var chartDiv = $('#pmchart')[0]
+					
+					var graph = new Dygraph(
+					  chartDiv,
+					  chartData,
+					  {
+					    label: chartLabel ,
+					    valueRange: [0, 260]
+					  }
+					)
+					
+					$("#stationName").text(`[${res.station.sido}/${res.station.station_name}]`);
+					if (res.bookmarked) {
+						 wrapper.find('.bookmark-on').removeClass('hide-it');
+						 wrapper.find('.bookmark-off').addClass('hide-it');
+					} else {
+						 wrapper.find('.bookmark-on').addClass('hide-it');
+						 wrapper.find('.bookmark-off').removeClass('hide-it');
+					}
+					// FIXME 로그인 했을때(AND 북마크 했을때)에만 PM 설정 양식을 보여줘야 합니다.
+					wrapper.find('#notif-pm25').val(res.pm25);
+					wrapper.find('#notif-pm100').val(res.pm100);
 				} else {
-					 wrapper.find('.bookmark-on').addClass('hide-it');
-					 wrapper.find('.bookmark-off').removeClass('hide-it');
+					$('#pmchart').append('<h4>데이터가 없습니다</h4>');
 				}
-				// FIXME 로그인 했을때(AND 북마크 했을때)에만 PM 설정 양식을 보여줘야 합니다.
-				wrapper.find('#notif-pm25').val(res.pm25);
-				wrapper.find('#notif-pm100').val(res.pm100);
+				
 				// var $(".bookmark-icon").val();
 //				if(loginUser) {
 //					

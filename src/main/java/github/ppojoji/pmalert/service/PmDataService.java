@@ -40,7 +40,7 @@ public class PmDataService {
 		/*
 		 * 현재 관측소별 최근 데이터를 모두 가져옴
 		 */
-		List<PmData> recentPmList = pmDataDao.findRecentPmList();
+		List<PmData> recentPmList = pmDataDao.findRecentPmList(null);
 		// recentPmList.get(0).getStation() // stationSeq
 		for (String sidoName : sido) {
 			System.out.println(sidoName);
@@ -69,6 +69,28 @@ public class PmDataService {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public List<PmData> findRecentPmList(String sido) {
+		List<PmData> pm = pmDataDao.findRecentPmList(sido);
+		return pm; 
+	}
+	public List<Station> findRecentPmForStation(String sido) {
+		List<Station> stations = stationDao.findStationsBySido(sido);
+		List<PmData> pm = findRecentPmList(sido);
+		
+		for(int i =0; i<stations.size(); i++) {
+			Station station = stations.get(i);
+			for(int j=0; j<pm.size(); j++) {
+				PmData pmData = pm.get(j);
+				if(pmData != null && 
+						pmData.getStation().equals(station.getSeq())) {
+//					station.setPmData(Arrays.asList(pmData))
+					station.setPmData(pmData);
+				}
+			}
+		}
+		return stations;
 	}
 	
 	public void loadHourlyData(Station station, PmData pmd, List<PmData> recentPmList) {

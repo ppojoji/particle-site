@@ -1,5 +1,7 @@
 package github.ppojoji.pmalert.dto;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Station {
@@ -13,6 +15,7 @@ public class Station {
 	private List<PmData> pmData;
 	
 	public Station() {
+		this.pmData = new ArrayList<>();
 	}
 	public Station(String station_name, String station_addr, Double station_lat, Double station_lng, String sido) {
 		super();
@@ -21,6 +24,7 @@ public class Station {
 		this.station_lat = station_lat;
 		this.station_lng = station_lng;
 		this.sido = sido;
+		this.pmData = new ArrayList<>();
 	}
 
 
@@ -65,6 +69,9 @@ public class Station {
 	}
 	public void setPmData(List<PmData> pmData) {
 		this.pmData = pmData;
+	}
+	public void setPmData(PmData pm) {
+		this.pmData = Arrays.asList(pm);
 	}
 	@Override
 	public String toString() {

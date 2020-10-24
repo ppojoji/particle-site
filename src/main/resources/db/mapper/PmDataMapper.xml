@@ -12,21 +12,26 @@
 		from pmdata 
 		where station = #{station}
 	</select>
-	<select id="findRecentPmList" resultType="PmData">
+	<select id="findRecentPmList" parameterType="string" resultType="PmData">
 		SELECT
 		   st.station_name,
 		   st.sido,
 			pm.*
 		FROM station st
-		JOIN (SELECT
-			   pm.seq,
-				pm.station,
-				MAX(pm.time) AS recent_time
-				FROM pmdata pm
-				GROUP BY pm.station
+		LEFT JOIN (SELECT
+				   pm.seq,
+					pm.station,
+					MAX(pm.time) AS recent_time
+					FROM pmdata pm
+					WHERE pm.pm25 IS NOT null 
+					AND pm.pm100 IS NOT null
+					GROUP BY pm.station
 			) rpm
 		  ON st.seq = rpm.station
-		JOIN pmdata pm 
+		LEFT JOIN pmdata pm 
 		  ON rpm.station = pm.station AND rpm.recent_time = pm.time
+		  <if test="sido != null">
+			 WHERE sido = #{sido} 
+		  </if>
 	</select>
 </mapper>

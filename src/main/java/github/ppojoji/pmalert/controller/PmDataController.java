@@ -1,5 +1,6 @@
 package github.ppojoji.pmalert.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import github.ppojoji.pmalert.dto.PmData;
@@ -81,5 +84,26 @@ public class PmDataController {
 		res.put("sido", sidoNames);
 		return res;
 		 
+	}
+	@RequestMapping(value = "/pm/findRecentPmList")
+	@ResponseBody
+	public Object findRecentPmList(@RequestParam String sido){
+		
+//		List<Station> stations = stationService.findStationsBySido(sido);
+//		List<PmData> pm = pmDataService.findRecentPmList(sido);
+//		
+//		for(int i =0; i<stations.size(); i++) {
+//			Station station = stations.get(i);
+//			for(int j=0; j<pm.size(); j++) {
+//				PmData pmData = pm.get(j);
+//				if(pmData != null && 
+//						pmData.getStation().equals(station.getSeq())) {
+////					station.setPmData(Arrays.asList(pmData))
+//					station.setPmData(pmData);
+//				}
+//			}
+//		}
+		List<Station> stations = pmDataService.findRecentPmForStation(sido);
+		return stations;
 	}
 }

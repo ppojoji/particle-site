@@ -47,14 +47,16 @@ public class StationController {
 		 * FIXME 굉장히 비효율적인 구현입니다.
 		 * 쿼리를 join해서 구현해야 함
 		 * 
-		 * 
+		 * N번 루프를 반복함
 		 */
+		/*
 		for (int i = 0; i < list.size(); i++) {
 			Station station = list.get(i);
 			List<PmData> pmValues = pmDataService.PmDataByStation(station.getSeq());
 			station.setPmData(pmValues);
 			
 		}
+		*/
 		return list;
 	}
 	@PostMapping(value = "/station/bookmark")

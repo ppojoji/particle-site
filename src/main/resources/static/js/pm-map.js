@@ -81,6 +81,12 @@ $(document).ready(function() {
 			infowin.open(map, marker);
 			// TODO INFOWIN 디자인 필요함
 			//      몇시 데이터인지도 html로 같이 조립해줘야 함
+			if(station.pmData.length === 0){
+				station.pmData.push({
+					pm25: '--',
+					pm100: '--'
+				})
+			}
 			var recentData = station.pmData[station.pmData.length-1];
 			infowin.setContent(`
 			<div class="pm-box" data-seq="${station.seq}">
@@ -110,6 +116,13 @@ $(document).ready(function() {
 	function renderMarkers() {
 		clearMarkers();
 		for(var i = 0 ; i < stations.length ; i++) {
+			/*
+			 *  pm25: 10
+				pm100: 27
+				seq: 15578
+				station: 3342
+				time: "2020-10-17T12:00:00"
+			 */
 			var m = new kakao.maps.Marker({ 
 				position: new kakao.maps.LatLng(stations[i].station_lat, stations[i].station_lng)
 			});
@@ -125,7 +138,7 @@ $(document).ready(function() {
 	}
 	function loadStationsBySido(sidoName) {
 		$.ajax({
-			url : "/stations" , 
+			url : "/pm/findRecentPmList" , 
 			method : "GET" , 
 			data : {
 				sido : sidoName
