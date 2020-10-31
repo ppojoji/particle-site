@@ -31,3 +31,10 @@
 .user-info {
 	float: right;
 }
+
+.error {
+    background-color: #ffe4e4;
+    padding: .5rem 1rem;
+    display: block;
+    color: #872c01;
+}
