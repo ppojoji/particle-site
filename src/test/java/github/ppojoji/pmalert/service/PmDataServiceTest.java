@@ -44,7 +44,7 @@ class PmDataServiceTest {
 		pmService.loadPmDataByStation(station);
 	}
 	
-	// @Test
+	@Test
 	@Rollback(false)
 	void test_모든관측소_데이터_로드() {
 		System.out.println("done");
@@ -53,7 +53,7 @@ class PmDataServiceTest {
 	
 	@Test
 	void test_관측소별_최신_데이터_가져오기() {
-		List<PmData> pmList = pmDataDao.findRecentPmList(null);
+		List<PmData> pmList = pmDataDao.findRecentPmList( (String)null);
 		for (PmData pm : pmList) {
 			System.out.println(pm);
 		}

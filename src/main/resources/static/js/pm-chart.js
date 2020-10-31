@@ -15,6 +15,7 @@ function StationPopup() {
 						res.pmdata[i].time = new Date(res.pmdata[i].time) 
 						chartData.push([res.pmdata[i].time,res.pmdata[i].pm25,res.pmdata[i].pm100])
 					}
+					chartData.reverse();
 					var chartLabel = ['시간', 'PM2.5' , 'PM10']
 					$('#pmchart').css('width', $('#station-popup').width()-10);
 					var chartDiv = $('#pmchart')[0]

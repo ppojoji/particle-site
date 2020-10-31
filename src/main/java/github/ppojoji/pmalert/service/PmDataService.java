@@ -15,6 +15,7 @@ import github.ppojoji.pmalert.dao.PmDataDao;
 import github.ppojoji.pmalert.dao.StationDao;
 import github.ppojoji.pmalert.dto.PmData;
 import github.ppojoji.pmalert.dto.Station;
+import github.ppojoji.pmalert.dto.StationBookmark;
 import github.ppojoji.pmalert.service.pmapi.PmApi;
 
 @Service
@@ -40,7 +41,7 @@ public class PmDataService {
 		/*
 		 * 현재 관측소별 최근 데이터를 모두 가져옴
 		 */
-		List<PmData> recentPmList = pmDataDao.findRecentPmList(null);
+		List<PmData> recentPmList = pmDataDao.findRecentPmList((String)null);
 		// recentPmList.get(0).getStation() // stationSeq
 		for (String sidoName : sido) {
 			System.out.println(sidoName);
@@ -53,7 +54,42 @@ public class PmDataService {
 						LocalDateTime recentTime = recent.getTime(); //11:00:00
 						LocalDateTime nowTime = pmd.getTime(); // 11:00:00
 						if(recentTime.isBefore(nowTime)) {
+							
 							pmDataDao.insertPmDatas(pmd);
+							
+							// TODO 사용자에게 미세먼지 통보하는 작업을 여기서 해야함
+							
+							// TODO 메일 전송 인프라 필요함
+							/* 
+							 *  1. 이전의 최근 미세먼지 데이터 수치 prev.pm25
+							 *  2. 새로 읽어들인 미세먼지 데이터 수치 cur.pm25
+							 *  
+							 *  CASE-1) 메일을 보내는 케이스 메시먼지가 올라갔다
+							 *  prev.pm25 <   boookmark.pm25   < cur.pm25
+							 *      27          60                     89
+							 *      
+							 *      
+							 *  CASE-2) 메일을 안보내는 케이스
+							 *  prev.pm25 <   cur.pm25   < boookmark.pm25
+							 *      27          48                60
+							 *      
+							 *      
+							 * CASE-3) 메일을 안보내는 케이스
+							 *  boookmark.pm25  < prev.pm25 <   cur.pm25 
+							 *      60             74              88
+							 *      
+							 *  CASE-4) 메일을 안보내는 케이스
+							 *  boookmark.pm25  < cur.pm25 <   prev.pm25 
+							 *      60             74              88
+							 *      
+							 *      
+							 *  CASE-4) 메일을 보내는 케이스 - 미세먼지가 내려갔다...
+							 *   cur.pm25 > bookmark.pm25   >  prev.pm25 
+							 *      89             60              51
+							 * 
+							 */
+							List<StationBookmark> bookmarks = pmDataDao.findUsersByBookMarkStation(stationSeq);
+							
 							logger.info("[HOURLY PM DATA] {}", pmd.toString() );
 						} else {
 							logger.info("[HOURLY PM DATA] SKIPPED");
@@ -116,10 +152,18 @@ public class PmDataService {
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public void synchronizePmData() {
 		List<Station> stations = stationDao.findAllStations();
+		
+		int idx = 0;
 		for (Station station : stations) {
+			if (station.getSeq() < 3702) {
+				// 음성읍
+				idx++;
+				continue;
+			}
+			System.out.printf("[%d of %d] %s \n", idx++, stations.size(), station.getStation_name());
 			loadPmDataByStation(station);
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(1500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -132,16 +176,22 @@ public class PmDataService {
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void loadPmDataByStation(Station station) {
 		List<PmData> pmList = pm.queryPmDataByStation(station); // 24개..?
+		PmData recentPm = pmDataDao.findRecentPmByStation(station.getSeq()); // null
+		LocalDateTime rencentTime = LocalDateTime.MIN;
+		if(recentPm != null) {
+			// recentPm.getTime();
+			rencentTime = recentPm.getTime(); // 디비에 들어가 있는 데이터의 최신 시간
+		}
+		
 		for (PmData pm : pmList) {
-			/*
-			 * TODO 무조건 밀어넣으면 안됩니다.
-			 * 3700 [ ..   10, 11, 12]
-			 * 
-			 * 3700: [ 09, 10,11, 12, 13, 14... 21]
-			 *          x   x  x   x
-			 */
 			try {
-				pmDataDao.insertPmDatas(pm);				
+				LocalDateTime pmTime = pm.getTime();
+				if( pmTime.isAfter(rencentTime) ) {
+					pmDataDao.insertPmDatas(pm);
+					System.out.println(" INSERT " + pm);
+				} else {
+					// TODO 이미 이전에 읽어온 데이터라도 NULL인 경우는 지금 새로 읽어온 데이터의 값으로 메꿔 넣어야 함 					
+				}
 			} catch (Exception e) {
 				// 일단은 이렇게 예외를 막아줌
 				e.printStackTrace();

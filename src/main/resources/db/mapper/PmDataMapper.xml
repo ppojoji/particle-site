@@ -11,8 +11,10 @@
 		select * 
 		from pmdata 
 		where station = #{station}
+		ORDER BY time Asc
+		Limit 24
 	</select>
-	<select id="findRecentPmList" parameterType="string" resultType="PmData">
+	<select id="findRecentPmList" parameterType="map" resultType="PmData">
 		SELECT
 		   st.station_name,
 		   st.sido,
@@ -33,5 +35,35 @@
 		  <if test="sido != null">
 			 WHERE sido = #{sido} 
 		  </if>
+		  <if test="station != null">
+		  	 WHERE st.seq = #{station}	
+		  </if>
+	</select>
+	<select id="findRecentPmByStation" parameterType="integer" resultType="PmData">
+	    SELECT
+		   st.station_name,
+		   st.sido,
+			pm.*
+		FROM station st
+		LEFT JOIN (SELECT
+				   pm.seq,
+					pm.station,
+					MAX(pm.time) AS recent_time
+					FROM pmdata pm
+					WHERE pm.station = #{station}
+			) rpm
+		  ON st.seq = rpm.station
+		LEFT JOIN pmdata pm 
+		  ON rpm.station = pm.station AND rpm.recent_time = pm.time
+	   WHERE st.seq = #{station}
+	</select>
+	<select id="findByBookMarkUser" parameterType="Integer" resultType="map">
+		SELECT
+		   sb.*,
+		   us.* 
+		from station_bookmark sb
+		join user us
+		 ON sb.user = us.seq
+		where sb.station = #{stationSeq}
 	</select>
 </mapper>

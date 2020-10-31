@@ -134,7 +134,11 @@ public class PmApi {
 			return null;
 		}
 	}
-
+	/**
+	 * 주어진 시도(서울, 부산 등)내의 관측소들의 실시간 데이터
+	 * @param sidoName
+	 * @return
+	 */
 	public List<PmData> queryHourlyPmData(String sidoName) {
 		String urlTemplate = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey=@apiKey&numOfRows=999&pageNo=1&sidoName=@sido&ver=1.3&";
 		
@@ -188,10 +192,10 @@ public class PmApi {
 				.replace("@TERM", "DAILY") 
 				.replace("@STATION", station.getStation_name()); 
 		
-		Connection con = Jsoup.connect(url).ignoreContentType(true);
+		Connection con = Jsoup.connect(url).timeout(30*1000).ignoreContentType(true);
 		try {
 			Document doc = con.get();
-			System.out.println(doc.toString());
+//			System.out.println(doc.toString());
 			String selector = "response > body > items > item";
 			Elements items = doc.select(selector);
 			List<PmData> dataList = new  ArrayList<>();
@@ -199,7 +203,7 @@ public class PmApi {
 				Element item = items.get(i);
 				
 				String name = item.select("stationName").text();
-				System.out.println("[관측소] [" + name + "]");
+//				System.out.println("[관측소] [" + name + "]");
 				//Station station = stationDao.findStationByName(name,sidoName);
 			
 				String time = item.select("dataTime").text();
