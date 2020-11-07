@@ -64,4 +64,15 @@ public class PmDataDao {
 		}
 		return bookmarks;
 	}
+
+	public int loadRecentPm(PmData pm) {
+		return session.insert("PmDataMapper.loadRecentPm", pm);
+	}
+	/**
+	 * 메일일 작업을 위해서 이전에 모아둔 관측소별 pm 데이터 가져옴
+	 * @return
+	 */
+	public List<PmData> findPrevPmData() {
+		return session.selectList("PmDataMapper.findPrevPmData");
+	}
 }

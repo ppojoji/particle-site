@@ -1,8 +1,9 @@
 package github.ppojoji.pmalert.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +65,7 @@ public class PmDataService {
 							 *  1. 이전의 최근 미세먼지 데이터 수치 prev.pm25
 							 *  2. 새로 읽어들인 미세먼지 데이터 수치 cur.pm25
 							 *  
-							 *  CASE-1) 메일을 보내는 케이스 메시먼지가 올라갔다
+							 *  CASE-1) 메일을 보내는 케이스 미세먼지가 올라갔다
 							 *  prev.pm25 <   boookmark.pm25   < cur.pm25
 							 *      27          60                     89
 							 *      
@@ -204,4 +205,8 @@ public class PmDataService {
 		return pmDataDao.PmDataByStation(stationSeq);
 		
 	}
+	public List<Map<String, Object>> loadUserBookmark() {
+		return stationDao.loadUserBookmark();
+	}
 }
+

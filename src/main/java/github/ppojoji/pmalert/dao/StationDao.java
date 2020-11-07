@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import github.ppojoji.pmalert.PmException;
 import github.ppojoji.pmalert.Res;
 import github.ppojoji.pmalert.dto.Station;
+import github.ppojoji.pmalert.dto.StationBookmark;
 import github.ppojoji.pmalert.dto.User;
 
 @Repository
@@ -102,6 +103,18 @@ public class StationDao {
 		
 		session.update("StationMapper.UpdateNotify",map);
 		
+	}
+
+	public List<Map<String, Object>> loadUserBookmark() {
+		session.insert("StationMapper.loadUserBookmark");
+		return session.selectList("StationMapper.findPmMailingList"); 
+	}
+	/**
+	 * 메일 통보받을 사용자북마크 정보 가져옴
+	 * @return
+	 */
+	public List<Map<String, Object>> findPmMailingList() {
+		return session.selectList("StationMapper.findPmMailingList");
 	}
 
 }

@@ -16,9 +16,13 @@
 	</select>
 	<select id="findRecentPmList" parameterType="map" resultType="PmData">
 		SELECT
+		   st.seq AS station,
 		   st.station_name,
 		   st.sido,
-			pm.*
+			pm.seq,
+			pm.pm25,
+			pm.pm100,
+			pm.time
 		FROM station st
 		LEFT JOIN (SELECT
 				   pm.seq,
@@ -65,5 +69,13 @@
 		join user us
 		 ON sb.user = us.seq
 		where sb.station = #{stationSeq}
+	</select>
+	<insert id="loadRecentPm" parameterType="PmData">
+		INSERT INTO recent_pm(pm25, pm100, time,station)
+ 			VALUES(#{pm25},#{pm100},#{time},#{station})
+	</insert>
+	<select id="findPrevPmData" resultType="PmData">
+		select * 
+		from recent_pm 
 	</select>
 </mapper>

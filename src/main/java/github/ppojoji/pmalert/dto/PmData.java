@@ -30,11 +30,25 @@ public class PmData {
 	public Double getPm25() {
 		return pm25;
 	}
+	public Double getPm25(Double defaultValue) {
+		if (pm25 == null) {
+			return defaultValue;
+		} else {
+			return pm25;
+		}
+	}
 	public void setPm25(Double pm25) {
 		this.pm25 = pm25;
 	}
 	public Double getPm100() {
 		return pm100;
+	}
+	public Double getPm100(Double defaultValue) {
+		if (pm100 == null) {
+			return defaultValue;
+		} else {
+			return pm100;
+		}
 	}
 	public void setPm100(Double pm100) {
 		this.pm100 = pm100;

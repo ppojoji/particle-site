@@ -84,4 +84,17 @@
  		where user = #{userSeq}
  		and station = #{stationSeq}
 	</update>
+	
+	<select id="findPmMailingList" resultType="map">
+		select * 
+		from pm_mailing
+		where sent = 'N' 
+	</select>
+	
+	<insert id="loadUserBookmark">
+		INSERT INTO pm_mailing(user,station,pm25,pm100)
+	       SELECT user, station, pm25, pm100 
+			 FROM station_bookmark 
+			 WHERE notify='Y'
+	</insert>
 </mapper>

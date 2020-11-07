@@ -10,6 +10,11 @@ public class StationBookmark {
 	private Integer stationSeq;
 	private Double pm25;
 	private Double pm100;
+	
+	/**
+	 * 서버쪽에서 사용할때 사용자에게 관측소 미세먼지 정보를 메일로 보냈는지 나타냄
+	 */
+	private String sent = "N";
 	public StationBookmark(User user, Double pm25, Double pm100, Integer stationSeq) {
 		this.user = user;
 		this.pm25 = pm25;
@@ -28,6 +33,16 @@ public class StationBookmark {
 	}
 	public Double getPm100() {
 		return pm100;
+	}
+	
+	public String getSent() {
+		return sent;
+	}
+	public void setSent(String sent) {
+		if(!"YN".contains(sent)) {
+			throw new RuntimeException("Y 또는 N만 사용해야함");
+		}
+		this.sent = sent;
 	}
 	@Override
 	public String toString() {
