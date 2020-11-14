@@ -47,4 +47,7 @@ public class UserDao {
 		return sqlSession.selectOne("UserMapper.findByUserSeqAndPw", map);
 	}
 
+	public User findBySeq(Integer userSeq) {
+		return sqlSession.selectOne("UserMapper.findBySeq", userSeq);
+	}
 }

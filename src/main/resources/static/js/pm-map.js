@@ -112,7 +112,54 @@ $(document).ready(function() {
 
 	    self.href = 'https://map.kakao.com/link/map/' + encodeURIComponent(`${station.station_name}`) + ',' + lat + ',' + lng; 
 	}
-	
+	function resolvePm25State(pm25) {
+		/*
+			‘좋음‘은 ‘0∼15㎍/㎥’, "good"
+			
+			‘보통’은 ‘16∼35㎍/㎥’, "normal"
+			
+			‘나쁨’은 ‘36∼75㎍/㎥’, "bed"
+			
+			‘매우 나쁨’은 ‘76㎍/㎥ 이상’ "so-bed"
+
+		 */
+		if(pm25 <= 15){
+			return "good";
+		}else if(pm25 <= 35){
+			return "normal";
+		}else if(pm25 <= 75){
+			return "bed";
+		}else {
+			return "so-bed";
+		}
+	}
+	function renderOverlay() {
+		clearMarkers();
+		var template = `
+			<div class="customoverlay">
+				<a href="https://map.kakao.com/link/map/11394059" target="_blank">
+					<h5 class="station-name @state">@name</h5>
+					<ul class="pm">
+						<li class="pm25">PM2.5 <span class="data">@25</span></li>
+						<li class="pm100">PM10.0: <span class="data">@100</span></li>
+					</ul>
+				</a>
+			</div>`; 
+		for(var i = 0 ; i < stations.length ; i++) {
+			var overlay = new kakao.maps.CustomOverlay({
+				map: map,
+				position: new kakao.maps.LatLng(stations[i].station_lat, stations[i].station_lng),
+				content: template
+							.replace('@name', stations[i].station_name)
+							.replace('@25', stations[i].pmData[0].pm25)
+							.replace('@100', stations[i].pmData[0].pm100)
+							.replace('@state', resolvePm25State(stations[i].pmData[0].pm25)), 
+							yAnchor: 1
+			});
+			markers.push(overlay)
+		}
+		map.setCenter(new kakao.maps.LatLng(stations[0].station_lat, stations[0].station_lng))
+	}
 	function renderMarkers() {
 		clearMarkers();
 		for(var i = 0 ; i < stations.length ; i++) {
@@ -147,7 +194,8 @@ $(document).ready(function() {
 				console.log(res);
 				sido = sidoName;
 				stations = res;
-				renderMarkers();
+				// renderMarkers();
+				renderOverlay();
 			}
 		})
 	}

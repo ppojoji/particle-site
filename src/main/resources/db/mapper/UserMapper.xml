@@ -32,4 +32,9 @@
 		from user 
 		where seq = #{userSeq} and password = #{curPass}
 	</select>
+	<select id="findBySeq" resultType="User" parameterType="Integer">
+		SELECT * 
+		FROM USER
+		WHERE SEQ = #{userSeq} 
+	</select>
 </mapper>

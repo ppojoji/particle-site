@@ -11,6 +11,71 @@
 <link href="/css/common.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+<style type="text/css">
+.customoverlay {
+	position: relative;
+	bottom: 85px;
+	border-radius: 6px;
+	border: 1px solid #ccc;
+	border-bottom: 2px solid #ddd;
+	float: left;
+}
+
+.customoverlay:nth-of-type(n) {
+	border: 0;
+	box-shadow: 0px 1px 2px #888;
+}
+
+.customoverlay a {
+	display: block;
+	text-decoration: none;
+	color: #000;
+	text-align: center;
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: bold;
+	overflow: hidden;
+    background-color: white;
+}
+
+.customoverlay .station-name.good {
+	background-color: #0d6eff;
+	color: white;
+}
+.customoverlay .station-name.normal {
+	background-color: #90ff75;
+}
+.customoverlay .station-name.bed {
+	background-color: #ffeb5c;
+}
+.customoverlay .station-name.so-bed {
+	background-color: #ff0000;
+	color: white;
+}
+
+.customoverlay .station-name {
+	display: block;
+	background: #fff;
+    margin: 0;
+    padding: 4px 0;
+}
+.customoverlay .pm {
+	margin: 0;
+    list-style: none;
+    padding: 8px;
+}
+
+.customoverlay:after {
+	content: '';
+	position: absolute;
+	margin-left: -12px;
+	left: 50%;
+	bottom: -12px;
+	width: 22px;
+	height: 12px;
+	background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+}
+</style>
 <script type="text/javascript" src="/js/user/user-info.js"></script>
 </head>
 <body>

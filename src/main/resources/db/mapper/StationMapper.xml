@@ -97,4 +97,11 @@
 			 FROM station_bookmark 
 			 WHERE notify='Y'
 	</insert>
+	
+	<update id="updateMailingSent" parameterType="map">
+		UPDATE pm_mailing
+		SET sent = 'Y'
+		WHERE user = #{userSeq}
+		AND station = #{stationSeq}
+	</update>
 </mapper>

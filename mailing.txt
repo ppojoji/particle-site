@@ -1,0 +1,34 @@
+
+a s2
+b s0 s1
+c s3
+d ---
+e s0 s1 s3
+
+Job0 - 적재된 데이터 삭제
+
+Jop1 - 관측소별 최신 데이터 1건씩 로드해놓음
+s0 datetime pm25 pm 100
+s1 datetime pm25 pm 100
+s2 datetime pm25 pm 100
+s3 datetime pm25 pm 100
+
+Job2 - 사용자별 관측소 메일링 데이터 로드해놓음
+user  station sent  pm25  pm100
+==== ======== ==== 
+a     s2      false  34    89
+b     s0      false
+b     s1      false
+c     s3      false
+..
+..
+..
+====================
+
+Job3 - 최신 데이터 로드해서 메일 전송 및 업데이트
+5분마다 5/10/15/20/25/30
+
+@Scheduled 
+10:55 - Job0 Job1 Job2 ( 사전작업)
+11:00 - Job3 (메일링 본작업)
+11:50-

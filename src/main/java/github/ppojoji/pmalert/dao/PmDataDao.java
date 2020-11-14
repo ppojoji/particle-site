@@ -75,4 +75,9 @@ public class PmDataDao {
 	public List<PmData> findPrevPmData() {
 		return session.selectList("PmDataMapper.findPrevPmData");
 	}
+
+	public void clearNotificationData() {
+		session.delete("PmDataMapper.clearRencetPm");
+		session.delete("PmDataMapper.clearMailingList");
+	}
 }

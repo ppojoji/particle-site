@@ -146,7 +146,7 @@ public class PmApi {
 				.replace("@apiKey", apiKey);
 				;
 		
-		Connection con = Jsoup.connect(url).ignoreContentType(true);
+		Connection con = Jsoup.connect(url).timeout(60*1000).ignoreContentType(true);
 		try {
 			Document doc = con.get();
 			// System.out.println(doc.toString());
@@ -192,7 +192,7 @@ public class PmApi {
 				.replace("@TERM", "DAILY") 
 				.replace("@STATION", station.getStation_name()); 
 		
-		Connection con = Jsoup.connect(url).timeout(30*1000).ignoreContentType(true);
+		Connection con = Jsoup.connect(url).timeout(60*1000).ignoreContentType(true);
 		try {
 			Document doc = con.get();
 //			System.out.println(doc.toString());

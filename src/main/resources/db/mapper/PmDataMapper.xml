@@ -11,7 +11,7 @@
 		select * 
 		from pmdata 
 		where station = #{station}
-		ORDER BY time Asc
+		ORDER BY time DESC
 		Limit 24
 	</select>
 	<select id="findRecentPmList" parameterType="map" resultType="PmData">
@@ -78,4 +78,10 @@
 		select * 
 		from recent_pm 
 	</select>
+	<delete id="clearRencetPm">
+		delete from recent_pm 
+	</delete>
+	<delete id="clearMailingList">
+		delete from pm_mailing
+	</delete>
 </mapper>

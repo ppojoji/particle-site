@@ -117,4 +117,17 @@ public class StationDao {
 		return session.selectList("StationMapper.findPmMailingList");
 	}
 
+	/**
+	 * 미세먼지 메일 전송으로 변경
+	 * @param userSeq
+	 * @param stationSeq
+	 */
+	public void updateMailingSent(Integer userSeq, Integer stationSeq) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userSeq", userSeq);
+		map.put("stationSeq", stationSeq);
+		
+		session.update("StationMapper.updateMailingSent",map);
+	}
+
 }

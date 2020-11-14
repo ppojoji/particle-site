@@ -156,7 +156,7 @@ public class PmDataService {
 		
 		int idx = 0;
 		for (Station station : stations) {
-			if (station.getSeq() < 3702) {
+			if (station.getSeq() < 3583) {
 				// 음성읍
 				idx++;
 				continue;
@@ -164,7 +164,7 @@ public class PmDataService {
 			System.out.printf("[%d of %d] %s \n", idx++, stations.size(), station.getStation_name());
 			loadPmDataByStation(station);
 			try {
-				Thread.sleep(1500);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

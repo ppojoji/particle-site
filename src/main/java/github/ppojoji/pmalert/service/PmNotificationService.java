@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 
 import github.ppojoji.pmalert.dao.PmDataDao;
 import github.ppojoji.pmalert.dao.StationDao;
+import github.ppojoji.pmalert.dao.UserDao;
+import github.ppojoji.pmalert.dto.Mail;
 import github.ppojoji.pmalert.dto.PmData;
-import github.ppojoji.pmalert.dto.StationBookmark;
+import github.ppojoji.pmalert.dto.Station;
+import github.ppojoji.pmalert.dto.User;
 import github.ppojoji.pmalert.service.pmapi.PmApi;
 
 @Service
@@ -29,9 +32,15 @@ public class PmNotificationService {
 	@Autowired
 	PmApi api;
 	
+	@Autowired
+	MailingService mailService;
 	
-	// @Scheduled
+	@Autowired
+	UserDao userDao;
+	
+	@Scheduled(cron = "0 0 * * * *")
 	public void prepareJob0_1_2() {
+		System.out.println("[메일링 사전 작업]");
 		clearNotificationData();
 		loadRecentPm();
 		loadUserBookmark();
@@ -41,8 +50,11 @@ public class PmNotificationService {
 	 * Job3 - 최신 데이터 로드해서 메일 전송 및 업데이트
 	 * 5분마다 5/10/15/20/25/30
 	 */
+	@Scheduled(cron = "30 5,10,15,20,21,22,23,24,25 * * * *")
 	public void startJob3() {
+		System.out.println("[START NOTIFICATION]");
 		startNotification();
+		System.out.println("[START NOTIFICATION]");
 	}
 	
 	/**
@@ -50,7 +62,7 @@ public class PmNotificationService {
 	 * 
 	 */
 	public void clearNotificationData() {
-		// TODO 테이블 정리 작업
+		pmDao.clearNotificationData();
 	}
 	public Object loadRecentPm() {
 		List<PmData> pmList = pmService.findRecentPmList(null);
@@ -75,7 +87,8 @@ public class PmNotificationService {
 	 */
 	public void startNotification() {
 		// 1. api call => 관측소별 `
-		String [] sidoList = "서울,부산,대구,인천,광주,대전,울산,경기,강원,충북,충남,전북,전남,경북,경남,제주,세종".split(",");
+		// String [] sidoList = "경기,서울,부산,대구,인천,광주,대전,울산,강원,충북,충남,전북,전남,경북,경남,제주,세종".split(",");
+		String [] sidoList = "경기,서울".split(",");
 		List<PmData> currentPmData = new ArrayList<>(); // [{station:13223}, {], {], {station: 322}]
 		for (String sido : sidoList) {
 			List<PmData> sidoPmData = api.queryHourlyPmData(sido);
@@ -95,6 +108,7 @@ public class PmNotificationService {
 	public void resolveMailingList(List<PmData> prevPmData, List<PmData> currentPmData) {
 		List<Map<String, Object>> mailing = stationDao.findPmMailingList();
 		for (Map<String, Object> boookmark : mailing) { // 1000*3 = 3000
+			Integer userSeq = (Integer) boookmark.get("user");
 			Integer pm25 = (Integer) boookmark.get("pm25");
 			Integer pm100 = (Integer) boookmark.get("pm100");
 			Integer stationSeq = (Integer) boookmark.get("station");
@@ -120,27 +134,57 @@ public class PmNotificationService {
 			Double prevPm100 = prev.getPm100(0.0);
 			Double curPm25 =current.getPm25(0.0);
 			Double curPm100= current.getPm100(0.0);
+			Mail mail = new Mail();
 			
+			String template = "종로구 @time시 미세먼지  PM10: @pm100, PM2.5: @pm25";
 			if(prevPm25 <= pm25.doubleValue() && 
 				pm25.doubleValue() <= curPm25 ||
 				prevPm100 <= pm100.doubleValue() && 
 				pm100.doubleValue() <= curPm100) {
 				// TODO 메일 전송 작업을 해야함
-				System.out.println("[메일 전송] " + boookmark);
-				System.out.printf ("         (%d)PM 2.5 prev:%.1f, user: %d, cur: %.1f\n",
-						stationSeq, 
-						prev.getPm25(),
-						pm25,
-						current.getPm25());
-				System.out.printf ("         (%d) Pm10.0 prev:%.1f, user: %d, cur: %.1f\n",
-						stationSeq, 
-						prev.getPm100(),
-						pm100,
-						current.getPm100());
+				System.out.println("[메일 전송] 올라감: " + boookmark);
+				
+				Station station = stationDao.findBySeq(stationSeq);
+				
+				mail.setSubject("[" + station.getStation_name() +"] 미세먼지 상승 알림");
+				String content = template
+						.replace("@time", "12")
+						.replace("@pm100", curPm100.toString())
+						.replace("@pm25", curPm25.toString());
+				mail.setContent(content);
+				
+				User user = new User();
+				user = userDao.findBySeq(userSeq);
+				mail.setReceiver(user.getEmail());
+				
+				mailService.SendMail(mail);
+				
+				stationDao.updateMailingSent(userSeq,stationSeq);
+				
 				// TODO 메일을 보낸 후에 pm_mailing.sent = 'Y'로 변경해야합니다.
 			}
 			// TODO 미세먼지가 떨어지는 경우도 위와같이 처리를 해야함
-			
+			// prev25 >=  pm25   => cur25
+			//  50         40        33        60 
+			else if(pm25 >= curPm25 && prevPm25 >= pm25) {
+				System.out.println("[메일 전송] 내려감: " + boookmark);
+
+				Station station = stationDao.findBySeq(stationSeq);
+				
+				mail.setSubject("[" + station.getStation_name() +"] 미세먼지 하강 알림");
+				String content = template
+						.replace("@time", "12")
+						.replace("@pm100", curPm100.toString())
+						.replace("@pm25", curPm25.toString());
+				mail.setContent(content);
+				
+				User user = new User();
+				user = userDao.findBySeq(userSeq);
+				mail.setReceiver(user.getEmail());
+				
+				mailService.SendMail(mail);
+
+			}
 			
 			
 		}
