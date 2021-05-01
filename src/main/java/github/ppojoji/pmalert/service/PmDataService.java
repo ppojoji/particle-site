@@ -31,7 +31,6 @@ public class PmDataService {
 	
 	@Autowired
 	StationDao stationDao;
-	
 	/**
 	 * 매 시간마다 미세먼지 정보를 읽어들임
 	 * 
@@ -54,7 +53,7 @@ public class PmDataService {
 					if (recent.getStation().equals(stationSeq)) {
 						LocalDateTime recentTime = recent.getTime(); //11:00:00
 						LocalDateTime nowTime = pmd.getTime(); // 11:00:00
-						if(recentTime.isBefore(nowTime)) {
+						if(recentTime == null || recentTime.isBefore(nowTime)) {
 							
 							pmDataDao.insertPmDatas(pmd);
 							
@@ -156,15 +155,15 @@ public class PmDataService {
 		
 		int idx = 0;
 		for (Station station : stations) {
-			if (station.getSeq() < 3583) {
-				// 음성읍
-				idx++;
-				continue;
-			}
+//			if (station.getSeq() < 3583) {
+//				// 음성읍
+//				idx++;
+//				continue;
+//			}
 			System.out.printf("[%d of %d] %s \n", idx++, stations.size(), station.getStation_name());
 			loadPmDataByStation(station);
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

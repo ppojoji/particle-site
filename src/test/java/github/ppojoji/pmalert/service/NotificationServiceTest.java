@@ -11,10 +11,12 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Import;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.annotation.Rollback;
 
 import github.ppojoji.pmalert.dao.PmDataDao;
 import github.ppojoji.pmalert.dao.StationDao;
+import github.ppojoji.pmalert.dao.UserDao;
 import github.ppojoji.pmalert.dto.PmData;
 import github.ppojoji.pmalert.dto.Station;
 import github.ppojoji.pmalert.service.pmapi.PmApi;
@@ -27,7 +29,10 @@ import github.ppojoji.pmalert.service.pmapi.PmApi;
 	PmDataService.class,
 	PmDataDao.class,
 	PmNotificationService.class,
-	StationDao.class
+	StationDao.class,
+	MailingService.class,
+	JavaMailSenderImpl.class,
+	UserDao.class
 })
 
 class NotificationServiceTest {
@@ -64,5 +69,11 @@ class NotificationServiceTest {
 		
 		// NotifServce.startNotification();
 		NotifServce.resolveMailingList(prevPmData, currentPmData);
+	}
+	
+	@Test
+	@Rollback(false)
+	void test_startNotification() {
+		NotifServce.startNotification();
 	}
 }

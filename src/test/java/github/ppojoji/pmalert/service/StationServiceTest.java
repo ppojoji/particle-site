@@ -28,5 +28,11 @@ class StationServiceTest {
 	void test_관측소_정보_업데이트() {
 		stationService.synchronizeAllStations();
 	}
+	
+	@Test
+	@Rollback(false)
+	void test_synchronizedStation() {
+		stationService.synchronizedStation();
+	}
 
 }

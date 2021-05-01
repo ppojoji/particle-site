@@ -50,7 +50,7 @@ public class PmNotificationService {
 	 * Job3 - 최신 데이터 로드해서 메일 전송 및 업데이트
 	 * 5분마다 5/10/15/20/25/30
 	 */
-	@Scheduled(cron = "30 5,10,15,20,21,22,23,24,25 * * * *")
+	@Scheduled(cron = "30 5,10,15,20,25 * * * *")
 	public void startJob3() {
 		System.out.println("[START NOTIFICATION]");
 		startNotification();

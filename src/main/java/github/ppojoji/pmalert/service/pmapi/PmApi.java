@@ -80,6 +80,11 @@ public class PmApi {
 			throw new RuntimeException("새로운 시도명 발견: " + addr);
 		}
 	}
+	/**
+	 * 주어진 시도의 관측소를 죠회합니다.
+	 * @param sidoName
+	 * @return
+	 */
 	public List<Station> listStationsBySido(String sidoName) {
 		String urlTemplate = "http://openapi.airkorea.or.kr/openapi/services/rest/MsrstnInfoInqireSvc/getMsrstnList?serviceKey=@apiKey&numOfRows=999&pageNo=1&addr=@sido&stationName=&";
 		
@@ -142,10 +147,11 @@ public class PmApi {
 	public List<PmData> queryHourlyPmData(String sidoName) {
 		String urlTemplate = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey=@apiKey&numOfRows=999&pageNo=1&sidoName=@sido&ver=1.3&";
 		
-		String url = urlTemplate.replace("@sido", sidoName)
+		String url = urlTemplate
+				.replace("@sido", sidoName)
 				.replace("@apiKey", apiKey);
 				;
-		
+		System.out.println("url :" + url);
 		Connection con = Jsoup.connect(url).timeout(60*1000).ignoreContentType(true);
 		try {
 			Document doc = con.get();
@@ -158,6 +164,7 @@ public class PmApi {
 				
 				String name = item.select("stationName").text();
 				// System.out.println("[관측소] [" + name + "]");
+				System.out.println("[STATION] " + name  + " at " + sidoName);
 				Station station = stationDao.findStationByName(name,sidoName);
 				if (station == null) {
 					// TODO 이렇게 새로운 관측소가 나오면 관측소를 집어넣어야 함

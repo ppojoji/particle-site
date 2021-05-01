@@ -31,7 +31,6 @@ class PmApiTest {
 	
 	@Test
 	void test1() {
-		PmApi pm = new PmApi();
 		
 		List<PmData> pmData = pm.queryHourlyPmData("서울");
 //		System.out.println(stations);

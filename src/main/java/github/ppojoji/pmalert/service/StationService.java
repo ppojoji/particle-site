@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ import github.ppojoji.pmalert.service.pmapi.PmApi;
 @Service
 public class StationService {
 
+	final private static Logger logger = LoggerFactory.getLogger(StationService.class);
+	
 	@Autowired
 	PmApi pm;
 	
@@ -52,7 +56,7 @@ public class StationService {
 	 */
 	public void synchronizedStation() {
 		Scanner sc = new Scanner(System.in);
-		String [] sido = "서울,대구,인천,광주,대전,울산,경기,강원,충북/충청북도,충남/충청남도,전북/전라북도,전남/전라남도,경북/경상북도,경남/경상남도,제주,세종".split(",");
+		String [] sido = "서울,대구,부산,인천,광주,대전,울산,경기,강원,충북/충청북도,충남/충청남도,전북/전라북도,전남/전라남도,경북/경상북도,경남/경상남도,제주,세종".split(",");
 //		String [][] sidoNames = {
 //				{"서울"},
 //				{"부산"},
@@ -68,6 +72,9 @@ public class StationService {
 				System.out.println(name + ", " + sidoName);
 				sc.nextLine(); // 엔터를 쳐야 api 호출되게...
 				List<Station> station = pm.listStationsBySido(name);
+				for(Station s : station) {
+					s.setSido(names[0]);
+				}
 				stations.addAll(station);
 			}
 			for (Station station : stations) {
@@ -79,7 +86,13 @@ public class StationService {
 				 *  3) 관측소가 없어짐!!!!
 				 */
 				System.out.println(station);
-				stationDao.insertStation(station);
+				Station existing = stationDao.findStationByName(station.getStation_name(), names[0]);
+				if(existing == null) {
+					stationDao.insertStation(station);
+					logger.info("[신규 관측소] {} at {}", station.getStation_name(), names[0]);
+				} else {
+					logger.warn("[중복 관측소 발견] {} at {}", existing.getStation_name(), names[0]);
+				}
 			}
 			
 		}
