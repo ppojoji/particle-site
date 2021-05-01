@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,6 +52,15 @@ public class UserController {
 			return Res.success("user" , user);
 		}
 	}
+	
+	@PostMapping(value="/logout")
+	@ResponseBody
+	public Object Logout(HttpSession session) {
+		User user = (User) session.getAttribute("LOGIN_USER");
+		session.invalidate();
+		return Res.success("user" , user);
+	}
+	
 	@RequestMapping(value="/myInfo.do" ,method = RequestMethod.GET)
 	@ResponseBody
 	public Object myInfo(HttpSession session) {

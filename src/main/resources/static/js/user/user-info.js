@@ -7,7 +7,7 @@ $(document).ready(function() {
 		success(res){
 			console.log(res);
 			if(res.success){
-				var html = `<a href="#">${res.user.email}</a> | <a href="/logout">LOGOUT</a>`
+				var html = `<a href="#">${res.user.email}</a> | <a class="btn-logout" href="/logout">LOGOUT</a>`
 				$('.user-info')
 					.empty()
 					.append(html);
@@ -18,4 +18,17 @@ $(document).ready(function() {
 		}
 	})
 	
+})
+
+$(document).on('click', '.btn-logout', (e) => {
+	e.preventDefault()
+	$.ajax({
+		url : "/logout",
+		method : "POST",
+		success(res){
+			alert("로그아웃 성공");
+			location.reload(true);
+		}
+	})
+	// e.stopPropagation()
 })
