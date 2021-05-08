@@ -1,6 +1,8 @@
 @charset "UTF-8";
+html {
+	font-size: 12px; /* 1rem */
+}
 .pm-box {
-	padding: 8px;
 	border-radius: 8px;
 }
 .pm-box > .station-name {

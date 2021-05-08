@@ -133,28 +133,60 @@ $(document).ready(function() {
 			return "so-bed";
 		}
 	}
-	function renderOverlay() {
+	function renderOverlay(stations) {
 		clearMarkers();
 		var template = `
 			<div class="customoverlay">
-				<a href="https://map.kakao.com/link/map/11394059" target="_blank">
+				<a class="pm-box" href="#" data-seq="@seq">
 					<h5 class="station-name @state">@name</h5>
 					<ul class="pm">
+						<li class="pm-time"><span class="">@time</span></li>
 						<li class="pm25">PM2.5 <span class="data">@25</span></li>
 						<li class="pm100">PM10.0: <span class="data">@100</span></li>
 					</ul>
 				</a>
-			</div>`; 
+			</div>`;
+		var noDataTemplate = `<div class="customoverlay">
+				<a class="pm-box" href="#" data-seq="@seq">
+					<h5 class="station-name no-data">@name</h5>
+					<span>관측 정보 없음</span>
+				</a>
+			</div>` 
 		for(var i = 0 ; i < stations.length ; i++) {
+			
+			var pm25Val = ''
+			var pm100Val = ''
+			var content = ''
+			if(stations[i].pmData[0].pm25 !== null){
+				pm25Val = stations[i].pmData[0].pm25
+			} else {
+				pm25Val = '없음'
+			}
+			
+			if(stations[i].pmData[0].pm100 !== null){
+				pm100Val = stations[i].pmData[0].pm100
+			}else {
+				pm100Val = '없음'
+			}
+			
+			if(stations[i].pmData[0].time === null){
+				content = noDataTemplate.replace('@seq' , stations[i].seq);
+				content = content.replace('@name' , stations[i].station_name);
+			} else {
+				content = template
+							.replace('@time',stations[i].pmData[0].time.substring(11,13) + '시')
+							.replace('@seq',stations[i].seq)
+							.replace('@name', stations[i].station_name)
+							.replace('@25', pm25Val)
+							.replace('@100', pm100Val)
+							.replace('@state', resolvePm25State(stations[i].pmData[0].pm25))
+			}
+			
 			var overlay = new kakao.maps.CustomOverlay({
 				map: map,
 				position: new kakao.maps.LatLng(stations[i].station_lat, stations[i].station_lng),
-				content: template
-							.replace('@name', stations[i].station_name)
-							.replace('@25', stations[i].pmData[0].pm25)
-							.replace('@100', stations[i].pmData[0].pm100)
-							.replace('@state', resolvePm25State(stations[i].pmData[0].pm25)), 
-							yAnchor: 1
+				content: content, 
+				yAnchor: 1
 			});
 			markers.push(overlay)
 		}
@@ -194,8 +226,8 @@ $(document).ready(function() {
 				console.log(res);
 				sido = sidoName;
 				stations = res;
-				// renderMarkers();
-				renderOverlay();
+				 //renderMarkers();
+				renderOverlay(stations);
 			}
 		})
 	}
@@ -220,4 +252,19 @@ $(document).ready(function() {
 		window.popup.show(target);
 	});
 	//  renderMarkers();
+	
+	$('#search-station').on('keyup',function(e){
+		// 1. enter를 쳤을때 현재 입력된 값을 가져옴
+		if ( e.keyCode === 13) {
+			// console.log(e.target.value)
+			console.log($(e.target).val())
+			var keyword = $(e.target).val()
+			var sta = stations.filter(sta => sta.station_name.includes(keyword))
+			console.log(sta)
+			// stations = sta // 이렇게 덮어씀
+			var cnt = sta.length;
+			$('.search-cnt').text(cnt+"개");
+			renderOverlay(sta)
+		}
+	})
 })

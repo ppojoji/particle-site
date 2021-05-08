@@ -1,6 +1,7 @@
 var loginUser = null
 
 $(document).ready(function() {
+	
 	$.ajax({
 		url :"/myInfo.do" ,
 		method : "GET" ,
@@ -18,6 +19,18 @@ $(document).ready(function() {
 		}
 	})
 	
+	$.ajax({
+		url : '/user/bookMark',
+		method : 'GET',
+		success(bookmarks) {
+			console.log('[bookmark]', bookmarks)
+			for(var i =0 ; i<bookmarks.length ; i++){
+				var sn = '<li><a href="#">@name</a></li>' // bookmarks[i].station_name
+				var li = sn.replace('@name',bookmarks[i].station_name);
+				$(li).appendTo($('.bookMark'))
+			}
+		}
+	})
 })
 
 $(document).on('click', '.btn-logout', (e) => {
