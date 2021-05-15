@@ -71,6 +71,7 @@ function StationPopup() {
 					wrapper.find(".bookmark-off").removeClass("hide-it");
 					wrapper.find(".bookmark-on").addClass("hide-it");
 				}
+				loadBookMark();
 			}
 		})
 	}

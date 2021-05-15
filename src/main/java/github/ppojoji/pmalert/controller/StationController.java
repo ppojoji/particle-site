@@ -1,12 +1,15 @@
 package github.ppojoji.pmalert.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -59,6 +62,12 @@ public class StationController {
 		*/
 		return list;
 	}
+	/**
+	 * 북마크 추가
+	 * @param stationSeq
+	 * @param session
+	 * @return
+	 */
 	@PostMapping(value = "/station/bookmark")
 	@ResponseBody
 	public Object BookMark(@RequestParam Integer stationSeq , HttpSession session) {
@@ -69,6 +78,36 @@ public class StationController {
 		}
 		boolean bookmarked = stationService.toggleBookmark(user.getSeq(),stationSeq);
 		return Res.success("bookmarked", bookmarked);
+	}
+	/**
+	 * 사용자 북마크 조회
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/station/bookmarks" ,method = RequestMethod.GET)
+	@ResponseBody
+	public Object userBookMark(HttpSession session) {
+		User user = (User) session.getAttribute("LOGIN_USER");
+		
+		List<Map<String,Object>> stationList = stationService.findBookMarkByUser(user.getSeq());
+		return stationList;
+	}
+	
+	/**
+	 * 북마크 삭제
+	 * @param session
+	 * @param stationSeq
+	 * @param pmType
+	 * @param pmValue
+	 * @return
+	 */
+	@DeleteMapping("/station/bookmark/{stationSeq}")
+	@ResponseBody
+	public Object deleteBookMark(HttpSession session ,@PathVariable Integer stationSeq) {
+		User user = (User)session.getAttribute("LOGIN_USER");
+		Boolean deleted = stationService.DeleteBookMark(user.getSeq(), stationSeq);
+		// return deleted;
+		return Res.success("success", deleted);
 	}
 	
 	@PostMapping(value = "/station/notification")

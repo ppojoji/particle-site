@@ -73,14 +73,6 @@ public class UserController {
 		}
 	}
 	
-	@RequestMapping(value = "/user/bookMark" ,method = RequestMethod.GET)
-	@ResponseBody
-	public Object userBookMark(HttpSession session) {
-		User user = (User) session.getAttribute("LOGIN_USER");
-		
-		List<Map<String,Object>> stationList = stationService.findBookMarkByUser(user.getSeq());
-		return stationList;
-	}
 	@RequestMapping(value = "/user/UpdatePass")
 	@ResponseBody
 	public Object updatePass(@RequestParam String curPass , @RequestParam String newPass, HttpSession session) {

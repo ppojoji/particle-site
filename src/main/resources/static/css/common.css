@@ -40,3 +40,18 @@ html {
     display: block;
     color: #872c01;
 }
+
+.bookmarks {
+	display: flex;
+    flex-direction: row;
+}
+
+.bookmarks .sido {
+	padding: 12px;
+    border: 1px solid #ccc;
+    margin-right: 12px;
+}
+.bookmarks .sido .stations {
+	padding-left: 0px;
+    list-style: none;
+}
