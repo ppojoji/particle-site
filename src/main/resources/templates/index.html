@@ -71,6 +71,16 @@
     list-style: none;
     padding: 8px;
     text-align: left;
+    display:flex;
+    column-gap: 8px;
+}
+
+.customoverlay .pm li {
+	flex: 1 1 auto;
+}
+
+.customoverlay .pm li span{
+	vertical-align : middle;
 }
 
 .customoverlay:after {
@@ -82,6 +92,39 @@
 	width: 22px;
 	height: 12px;
 	background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+}
+
+.station-cnt {
+	display: inline-flex;
+    column-gap: 10px;
+    font-size: 16px;
+}
+
+.rect {
+    width: 20px;
+    display: inline-block;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.good {
+    background-color: #0d6eff;
+}
+
+.normal {
+	background-color: #90ff75;
+}
+
+.bad {
+	background-color: #ffeb5c;
+}
+
+.so-bad {
+	background-color: #ff0000;
+}
+
+.cnt-elem span {
+	vertical-align: middle;
 }
 </style>
 <script type="text/javascript" src="/js/user/user-info.js"></script>
@@ -98,6 +141,20 @@
 		<div class="user-info">
 			<!-- <a href="#">adn</a> | <a href="/logout">LOGOUT</a> -->
 			<a class="login-link hide-it" href="/login.html">LOGIN</a>
+		</div>
+		<div class="station-cnt">
+			<div class="cnt-elem">
+				<span class="good rect"></span><span class="goodCnt">34</span>		
+			</div>
+			<div class="cnt-elem">
+				<span class="normal rect"></span><span class="normalCnt">34</span>		
+			</div>
+			<div class="cnt-elem">
+				<span class="bad rect"></span><span class="badCnt">34</span>		
+			</div>
+			<div class="cnt-elem">
+				<span class="so-bad rect"></span><span class="soBadCnt">34</span>		
+			</div>
 		</div>
 	</div>
 	<div id="map" style="width:100%;height:700px;"></div> 

@@ -138,4 +138,10 @@ public class StationController {
 		
 		return notify; 
 	}
+	@RequestMapping(value = "/station/stationDetail/{seq}")
+	@ResponseBody
+	public List<Map<String,Object>> stationDetail(@PathVariable Integer seq) {
+		List<Map<String,Object>> pmData = stationService.stationDetail(seq);
+		return pmData;
+	}
 }

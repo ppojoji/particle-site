@@ -176,5 +176,9 @@ public class StationService {
 		stationDao.UpdateNotify(UserSeq,stationSeq,notify);
 		
 	}
+	public List<Map<String,Object>> stationDetail(Integer seq) {
+		List<Map<String,Object>> pmData = stationDao.stationDetail(seq);
+		return pmData;
+	}
 	
 }

@@ -129,5 +129,14 @@ public class StationDao {
 		
 		session.update("StationMapper.updateMailingSent",map);
 	}
+	/**
+	 * 주어진 관측소의 전체 관측 데이터 반환
+	 * @param seq
+	 * @return
+	 */
+	public List<Map<String,Object>> stationDetail(Integer seq) {
+		List<Map<String,Object>> pmData = session.selectList("StationMapper.stationDetail",seq);
+		return pmData;
+	}
 
 }

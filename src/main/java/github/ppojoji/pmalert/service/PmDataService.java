@@ -163,7 +163,7 @@ public class PmDataService {
 			System.out.printf("[%d of %d] %s \n", idx++, stations.size(), station.getStation_name());
 			loadPmDataByStation(station);
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(1500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -104,4 +104,11 @@
 		WHERE user = #{userSeq}
 		AND station = #{stationSeq}
 	</update>
+	
+	<select id="stationDetail" resultType="map" parameterType="int">
+		SELECT * 
+		FROM pmdata
+		WHERE station = #{id}
+		ORDER BY `time` desc
+	</select>
 </mapper>

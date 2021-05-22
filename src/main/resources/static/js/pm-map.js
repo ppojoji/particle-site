@@ -139,10 +139,10 @@ $(document).ready(function() {
 			<div class="customoverlay">
 				<a class="pm-box" href="#" data-seq="@seq">
 					<h5 class="station-name @state">@name</h5>
+					<div class="pm-time"><span class="">@time</span></div>
 					<ul class="pm">
-						<li class="pm-time"><span class="">@time</span></li>
-						<li class="pm25">PM2.5 <span class="data">@25</span></li>
-						<li class="pm100">PM10.0: <span class="data">@100</span></li>
+						<li class="pm25"><span class="data"><img src='/images/pm25.svg'></span><span>@25</span></li>
+						<li class= "pm100"><span class="data"><img src='/images/pm100.svg'><span>@100</span></span></li>
 					</ul>
 				</a>
 			</div>`;
@@ -227,6 +227,7 @@ $(document).ready(function() {
 				sido = sidoName;
 				stations = res;
 				 //renderMarkers();
+				 stationCnt();
 				renderOverlay(stations);
 			}
 		})
@@ -267,4 +268,45 @@ $(document).ready(function() {
 			renderOverlay(sta)
 		}
 	})
+	
+	// aaa(function() { 
+	//     	
+	// })
+/*	function aaa ( callback ) {
+		
+	}*/
+	function stationCnt(){
+		//console.log('여기서 갯수 업데이트')
+		/*if(pm25 <= 15){
+			return "good";
+		}else if(pm25 <= 35){
+			return "normal";
+		}else if(pm25 <= 75){
+			return "bed";
+		}else {
+			return "so-bed";
+		}*/
+		/*var good = stations.filter(pm25=> pm25.pmData[0].pm25 <= 15);
+		var normal = stations.filter(pm25=> pm25.pmData[0].pm25 > 15 && pm25.pmData[0].pm25 <= 35);
+		var bad = stations.filter(pm25=> pm25.pmData[0].pm25 > 35 && pm25.pmData[0].pm25 <= 75);
+		var soBad = stations.filter(pm25=> pm25.pmData[0].pm25 > 75);*/
+		
+		var pm25List = stations.map(station => station.pmData[0].pm25)
+		
+		var good = pm25List.filter(pm25=> pm25 <= 15);
+		var normal = pm25List.filter(pm25=> pm25 > 15 && pm25 <= 35);
+		var bad = pm25List.filter(pm25=> pm25 > 35 && pm25 <= 75);
+		var soBad = pm25List.filter(pm25=> pm25 > 75);
+		
+		console.log('total', stations.length)
+		console.log("good" + good.length);
+		console.log("normal" +normal.length);
+		console.log("bad" +bad.length);
+		console.log("soBad" +soBad.length);
+		
+		$('.goodCnt').text(good.length);
+		$('.normalCnt').text(normal.length);
+		$('.badCnt').text(bad.length);
+		$('.soBadCnt').text(soBad.length);
+	}
 })
