@@ -102,7 +102,8 @@ function StationPopup() {
 		if(loginUser != null){
 			toggleBookmark()
 		}else {
-			alert("로그인 하세요.");
+			// alert("로그인 하세요.");
+			loginPopup.show()
 		}
 		//console.log('ok????')
 		

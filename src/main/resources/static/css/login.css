@@ -1,0 +1,69 @@
+.login-popup {
+    z-index: 2;
+    position: fixed;
+    background-color: #0000004d;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.login-popup .login-container {
+    background-color: white;
+    position: absolute;
+    width: 400px;
+    /*height: 300px;*/
+    top: 50%;
+    left: 50%;
+    padding: 24px;
+    transform: translate(-50%, -50%);
+}
+
+.login-popup .login-container input {
+	width: 100%;
+	padding : 8px 8px 8px 32px;
+}
+.login-popup .login-container .item {
+	margin-bottom: 8px;
+	position: relative;
+}
+.login-popup .login-container .item img.form-icon{
+	position: absolute;
+    top: 50%;
+    left: 4px;
+    transform: translate(0px, -50%);
+ }
+ 
+ .login-popup .login-container .item img.spin {
+	animation: loading-spin .5s infinite;
+}
+ 
+ 
+.login-popup .login-container .login-btn{
+	background-color: #df4e16;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 25px;
+    font-weight: 600;
+    outline: none;
+}
+.login-popup .login-container .pending.login-btn{
+	background-color: #c4c4c4;
+}
+
+.login-popup .login-container .login-btn:hover {
+	background-color: #c3410e;
+}
+.login-popup .login-container .login-btn:active {
+	background-color: #9b3209;
+}
+
+@keyframes loading-spin {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
+}
+
+
+.mgt-1rem {
+	margin-top: 2rem;
+}

@@ -44,6 +44,12 @@ public class UserController {
 	public Object Login(@RequestParam String email , @RequestParam String Pwd , HttpSession session) {
 		User user = userService.login(email , Pwd);
 		
+		try {
+			Thread.sleep(3*1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		if(user == null) {
 			return Res.fail();
 		} else {
