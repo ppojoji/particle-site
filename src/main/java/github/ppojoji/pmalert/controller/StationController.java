@@ -138,10 +138,20 @@ public class StationController {
 		
 		return notify; 
 	}
+	
+	
 	@RequestMapping(value = "/station/stationDetail/{seq}")
 	@ResponseBody
-	public List<Map<String,Object>> stationDetail(@PathVariable Integer seq) {
+	public Object stationDetail(@PathVariable Integer seq) {
 		List<Map<String,Object>> pmData = stationService.stationDetail(seq);
-		return pmData;
+		
+		Station station = stationService.findBySeq(seq);
+		
+		// Res.succ
+//		Map<String, Object> res = new HashMap<>();
+//		res.put("station", statoin);
+//		res.put("data", pmData);
+		return Res.success("station", station, "data", pmData);
+//		return pmData;
 	}
 }

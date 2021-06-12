@@ -15,4 +15,10 @@ public class PageController {
 		model.addAttribute("mapApiKey", mapApiKey);
 		return "index"; // template/index.html
 	}
+	
+	@GetMapping("/station")
+	public String PageStaion(Model model) {
+		model.addAttribute("mapApiKey", mapApiKey);
+		return "station"; 
+	}
 }

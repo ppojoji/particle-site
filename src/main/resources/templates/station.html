@@ -9,20 +9,47 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<link href="/css/common.css" rel="stylesheet" type="text/css" />
+	<link href="/css/station.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<script src="/js/station.js"></script>
+	<script type="text/javascript" th:src="|//dapi.kakao.com/v2/maps/sdk.js?appkey=${mapApiKey}|"></script> 
 	</head>
 	
 	
 	<body>
 	
 	<div class="container-fluid">
-		<div class="row">
-			<div class="col-12"><h3><span class="station-name">관측소명</span><span class="date">2021-05-22</span></h3></div>
+		<div class="head">
+			<div class="row">
+				<div class="col-12"><h3>
+				<select id="sido">
+					<option value="서울">서울</option>
+					<option value="경기">경기</option>
+					<option value="전남">전남</option>
+					<option value="전북">전북</option>
+				</select>
+				<span class="station-name">관측소명</span><span class="date">2021-05-22</span>
+					<span class="pm25-24h">23.3</span><span class="pm100-24h">53.3</span>
+				</h3></div>
+			</div>
+			<div class="row">
+				<div class="col-12"><div id="map"></div></div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<div class="stations"></div>
+				</div>
+			</div>
+			<div>
+				<span class="near0">수내</span>
+				<span class="near1">수내</span>
+				<span class="near2">수내</span>
+			</div>
 		</div>
+		
 		<div class="row">
 			<div class="col-12">
-			<table class="table">
+			<table class="table pm-table">
 				<thead>
 					<tr>
 						<th>TIME</th>
@@ -31,7 +58,7 @@
 					</tr>
 				</thead>
 				<tbody  id="pm-list">
-					<tr>
+					<!--<tr>
 						<td>12:00</td>
 						<td>33</td>
 						<td>89</td>
@@ -40,7 +67,7 @@
 						<td>12:00</td>
 						<td>33</td>
 						<td>89</td>
-					</tr>
+					</tr>-->
 				</tbody>
 				
 			</table>

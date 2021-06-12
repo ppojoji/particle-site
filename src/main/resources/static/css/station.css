@@ -1,0 +1,37 @@
+.stations {
+    padding: 10px;
+    background-color: #fffe73;
+    border: 1px solid #ccc;
+}
+
+.stations .station {
+    padding: 5px;
+    display: inline-block;
+}
+
+.stations .active {
+	background-color: #d45f22;
+    color: white;
+    display: inline-block;
+}
+
+#map {
+    height: 250px;
+}
+
+.head{
+	position: fixed;
+    z-index: 10;
+    background-color: white;
+    width: 100%;
+}
+
+.pm-table {
+    margin-top: 366px;
+}
+
+.topk span {
+    background-color: #007bff;
+    color: white;
+    border-radius: 8px;
+}

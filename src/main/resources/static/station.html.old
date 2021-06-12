@@ -1,0 +1,65 @@
+<html>
+	<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta charset="UTF-8">
+	<title>뭐지?</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link href="/css/common.css" rel="stylesheet" type="text/css" />
+	<link href="/css/station.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<script src="/js/station.js"></script>
+	<script type="text/javascript" th:src="|//dapi.kakao.com/v2/maps/sdk.js?appkey=${mapApiKey}|"></script> 
+	</head>
+	
+	
+	<body>
+	
+	<div class="container-fluid">
+		<div>
+			<div class="row">
+				<div class="col-12"><h3><span class="station-name">관측소명</span><span class="date">2021-05-22</span></h3></div>
+			</div>
+			<div class="row">
+				<div class="col-12"><div id="map"></div></div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<div class="stations"></div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-12">
+			<table class="table pm-table">
+				<thead>
+					<tr>
+						<th>TIME</th>
+						<th>PM 2.5</th>
+						<th>PM 10.0</th>
+					</tr>
+				</thead>
+				<tbody  id="pm-list">
+					<!--<tr>
+						<td>12:00</td>
+						<td>33</td>
+						<td>89</td>
+					</tr>
+					<tr>
+						<td>12:00</td>
+						<td>33</td>
+						<td>89</td>
+					</tr>-->
+				</tbody>
+				
+			</table>
+			</div>
+		</div>
+	</div>
+	</body>
+</html>
