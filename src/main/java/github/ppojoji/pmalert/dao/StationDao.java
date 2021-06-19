@@ -139,4 +139,9 @@ public class StationDao {
 		return pmData;
 	}
 
+	public List<String> sidoList() {
+		List<String> sidoList = session.selectList("StationMapper.sidoList");
+		return sidoList;
+	}
+
 }

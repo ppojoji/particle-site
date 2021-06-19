@@ -111,4 +111,9 @@
 		WHERE station = #{id}
 		ORDER BY `time` desc
 	</select>
+	
+	<select id="sidoList" resultType="String">
+		SELECT distinct(sido) 
+		FROM station
+	</select>
 </mapper>

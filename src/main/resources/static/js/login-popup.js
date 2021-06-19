@@ -2,8 +2,8 @@
 $(document).ready(() => {
 	
 	const template = {
-		login: `<div class="login-popup">
-		<div class="login-container">
+		login: `<div class="popup-bg">
+		<div class="popup-container">
 			<!--<h3>로그인</h3>-->
 			<div class="item">username</div>
 			<div class="item">
@@ -16,7 +16,7 @@ $(document).ready(() => {
 				<input type="password" class="pwd">
 			</div>
 			<div class="item mgt-1rem">
-				<button class="login-btn"><span>LOGIN</span><img class="spin" src="/images/spin.svg"></button>
+				<button class="btn-red login-btn"><span>LOGIN</span><img class="spin" src="/images/spin.svg"></button>
 				<span class="login-success">로그인 성공</span>
 				<span class="login-fail">로그인 실패</span> 
 			</div>
@@ -30,7 +30,18 @@ $(document).ready(() => {
 		// $wrapper.find('.spin').hide();
 		$wrapper.find('.spin, .login-success, .login-fail').hide();
 		
+		$wrapper.find('.id , .pwd').on("keyup",(e) =>{
+			if(e.keyCode == 13){
+				$('.login-btn').trigger('click');
+			}else if(e.keyCode == 27){
+				hide();
+			}
+		})
+		
 		$wrapper.find('.login-btn').on('click', () => {
+			$(".id").attr("disabled",true);
+			$(".pwd").attr("disabled",true);
+			
 			$wrapper.find('.spin').show();
 			
 			$wrapper.find('.login-btn').addClass('pending');
@@ -48,6 +59,8 @@ $(document).ready(() => {
 				success(res){
 					$wrapper.find('.spin').hide();
 					$wrapper.find('.login-btn').removeClass('pending');
+					$(".id, .pwd").attr("disabled",false);
+					
 					if(res.success) {
 						$wrapper.find('.login-success').show();
 						location.href = '/';
@@ -62,7 +75,7 @@ $(document).ready(() => {
 			hide();
 		})
 		
-		$wrapper.find('.login-container').on('click',function(e){
+		$wrapper.find('.popup-container').on('click',function(e){
 			e.stopPropagation()
 		})
 		
@@ -77,8 +90,16 @@ $(document).ready(() => {
 	
 	window.loginPopup = {
 		show: show,
-		showLogout: showLogout,
+		//showLogout: showLogout,
 		hide: hide
 	}
 	
+	/*$(document).ready(() => {
+		$('.id , .pwd').on("keyup",(e) => {
+			console.log('[ESC]', e.keyCode)
+			if(e.keyCode == 27) {
+				hide();
+			}
+		})
+	})*/
 })

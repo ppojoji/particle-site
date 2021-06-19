@@ -1,7 +1,8 @@
 $(document).ready(() => {
 	
-	var url = new URL(location.href)
-	var seq = parseInt(url.searchParams.get("station"))
+	//var url = new URL(location.href)
+	// var url = `
+	var seq = parseInt(localStorage.getItem("station"))
 	
 	console.log("##seq" + seq);
 	
@@ -161,6 +162,8 @@ $(document).ready(() => {
 		var $click = $(e.currentTarget)
 
 		var seq = $click.data('seq');
+		localStorage.setItem("station",seq);
+		
 		loadPmDetail(seq);
 		renderNearestStation(seq);
 
@@ -208,6 +211,8 @@ $(document).ready(() => {
 				}
 				
 				renderMap(res.station);
+				$("#sido").val(res.station.sido).prop("selected", true);
+				
 				 var date = res.data[0].time.substring(0,10);
 				$('.date').text(date);
 				$('.station-name').text(`[${res.station.sido}]` + res.station.station_name);
@@ -272,11 +277,6 @@ $(document).ready(() => {
 	    kakaoMap.setCenter(moveLatLon);
 	}
 
-	console.log(url)
-	console.log(seq)
-	
-	loadPmDetail(seq)
-	
 	$( window ).resize( function() {
 		resizeTable();
 	});
@@ -306,6 +306,26 @@ $(document).ready(() => {
 		marker.setMap(kakaoMap);
 	}
 	
+	function sidoList() {
+		$.ajax({
+			url: "/station/sidoList",
+			method : "GET",
+			success(res){
+				console.log(res);
+				/*res.forEach(sido =>{ 
+					$(`<option value="${sido}">${sido}</option>`).appendTo("#sido")
+				})*/
+				res
+					.map(sido => `<option value="${sido}">${sido}</option>`)
+					.forEach(option => {
+						$("#sido").append(option)
+					})
+				
+				loadPmDetail(seq)
+			}
+		})
+	}
+	sidoList();
 	
 })
 	

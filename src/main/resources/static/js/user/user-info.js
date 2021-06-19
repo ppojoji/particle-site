@@ -107,18 +107,24 @@ function loadBookMark(){
 
 $(document).on('click', '.btn-logout', (e) => {
 	e.preventDefault()
-	if(confirm("로그아웃 하시겠습니까?")){
-					
-	}
-	$.ajax({
-		url : "/logout",
-		method : "POST",
-		success(res){
-			
-			//alert("로그아웃 성공");
-			location.reload(true);
-		}
-	})
+	/*if(confirm("로그아웃 하시겠습니까?")){
+			$.ajax({
+				url : "/logout",
+				method : "POST",
+				success(res){
+				
+				//alert("로그아웃 성공");
+				location.reload(true);
+			}
+		})		
+	}*/
+	logoutPopUp.show();
 	// e.stopPropagation()
 })
 
+$(document).ready(() =>{
+	$(".user-info").on("click",".login-link",(e) => {
+		e.preventDefault();
+		loginPopup.show();
+	})
+})

@@ -29,7 +29,7 @@ function StationPopup() {
 					  }
 					)
 					
-					$("#stationName").html(`[<a href="/station.html?station=${res.station.seq}">${res.station.sido}/${res.station.station_name}</a>]`);
+					$("#stationName").html(`[<a href="/station" data-seq="${res.station.seq}">${res.station.sido}/${res.station.station_name}</a>]`);
 					if (res.bookmarked) {
 						 wrapper.find('.bookmark-on').removeClass('hide-it');
 						 wrapper.find('.bookmark-off').addClass('hide-it');
@@ -54,6 +54,14 @@ function StationPopup() {
 			}			
 		})
 	}
+	function stationNameClick() {
+		$("#stationName").on("click" , 'a', (e) => {
+		     // e.preventDefault();
+		     var seq = $(e.currentTarget).data("seq");
+		     localStorage.setItem("station",seq);
+		})
+	}
+	stationNameClick()
 	function toggleBookmark() {
 		
 		$.ajax({

@@ -181,4 +181,8 @@ public class StationService {
 		return pmData;
 	}
 	
+	public List<String> sidoList() {
+		return stationDao.sidoList();
+	}
+	
 }

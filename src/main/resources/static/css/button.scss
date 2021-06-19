@@ -1,0 +1,38 @@
+
+.btn-red{
+	background-color: #df4e16;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 25px;
+    font-weight: 600;
+    outline: none;
+    
+    &.pending {
+		background-color: #c4c4c4;
+		img.spin {
+			animation: loading-spin .5s infinite;
+		}
+	}
+	&:hover {
+		background-color: #c3410e;
+	}
+}
+
+.pending  img.spin {
+	animation: loading-spin .5s infinite;
+}
+
+
+.btn-red:hover {
+	background-color: #c3410e;
+}
+.btn-red:active {
+	background-color: #9b3209;
+}
+
+@keyframes loading-spin {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
+}
+
